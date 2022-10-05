@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <d3d11.h>
+#include"/imgui-master/imgui.h"
 
 #include "Window.h"
 #include "D3D11_imp.h"
@@ -41,7 +42,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		std::cerr << "Failed to setup window!" << std::endl;
 		return -1;
 	}
-
+	ImGui::CreateContext();
 	ID3D11Device* device;
 	ID3D11DeviceContext* immediateContext;
 	IDXGISwapChain* swapChain;
