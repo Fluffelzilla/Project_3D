@@ -81,8 +81,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	MSG msg = { };
 
 	//test world space settings
+	//fungerar ej... 
 	static float translationOffset[3] = { 0,0,0 };
-	//XMMATRIX world;
+	DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(translationOffset[0], translationOffset[1], translationOffset[2]);
 
 	while (msg.message != WM_QUIT)
 	{
@@ -102,7 +103,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		//Create ImGui Test Window
 		ImGui::Begin("Scene Setings");
 		ImGui::Text("Triangle position word");
-
+		ImGui::DragFloat3("Translation X/Y/Z", translationOffset, 0.1f, -5.0f, 5.0f);
 		ImGui::End();
 
 		//Assemble Together Draw Data
