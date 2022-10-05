@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "D3D11_imp.h"
 #include "Pipeline.h"
+#include<DirectXMath.h>
 
 //Graphics header includes:
 #include "DeraImGui/imgui.h"
@@ -79,6 +80,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	MSG msg = { };
 
+	//test world space settings
+	static float translationOffset[3] = { 0,0,0 };
+	//XMMATRIX world;
+
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -95,7 +100,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		ImGui::NewFrame();
 
 		//Create ImGui Test Window
-		ImGui::Begin("Test");
+		ImGui::Begin("Scene Setings");
+		ImGui::Text("Triangle position word");
+
 		ImGui::End();
 
 		//Assemble Together Draw Data
