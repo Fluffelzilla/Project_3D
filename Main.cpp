@@ -1,11 +1,14 @@
 #include <Windows.h>
 #include <iostream>
 #include <d3d11.h>
-#include"/imgui-master/imgui.h"
-
 #include "Window.h"
 #include "D3D11_imp.h"
 #include "Pipeline.h"
+
+//Graphics header includes:
+#include "DeraImGui/imgui.h"
+#include "DeraImGui/imgui_impl_dx11.h"
+#include "DeraImGui/imgui_impl_win32.h"
 
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11VertexShader* vShader,
@@ -42,7 +45,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		std::cerr << "Failed to setup window!" << std::endl;
 		return -1;
 	}
-	ImGui::CreateContext();
 	ID3D11Device* device;
 	ID3D11DeviceContext* immediateContext;
 	IDXGISwapChain* swapChain;
@@ -67,6 +69,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
+	//Set up GUI
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui_ImplWin32_Init(window);
+	ImGui_ImplDX11_Init(device, immediateContext);
+	ImGui::StyleColorsDark();
+
 	MSG msg = { };
 
 	while (msg.message != WM_QUIT)
@@ -78,6 +88,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		}
 
 		Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout, vertexBuffer);
+
+		//Start Dear ImGui frame
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
+		//Create ImGui Test Window
+		ImGui::Begin("Test");
+		ImGui::End();
+
+		//Assemble Together Draw Data
+		ImGui::Render();
+
+		//Render Draw Data
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+
 		swapChain->Present(0, 0);
 	}
 
