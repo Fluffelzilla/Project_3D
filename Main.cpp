@@ -81,7 +81,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	MSG msg = { };
 
 	//test world space settings
-	//fungerar ej... 
+	//fungerar ej... ska kopplas till constant buffer vilket jag inte har...
 	static float translationOffset[3] = { 0,0,0 };
 	DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(translationOffset[0], translationOffset[1], translationOffset[2]);
 
