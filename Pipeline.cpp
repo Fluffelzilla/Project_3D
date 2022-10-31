@@ -93,8 +93,22 @@ bool CreateVertexBuffer(ID3D11Device* device, ID3D11Buffer*& vertexBuffer)
 	return !FAILED(hr);
 }
 
+bool CreateConstantBuffer(ID3D11Device* device, ID3D11Buffer*& constantBuffer)
+{
+	D3D11_BUFFER_DESC bufferDesc;
+	bufferDesc.ByteWidth = static_cast<UINT>(sizeof(constBufferVertexShader) + (16 - (sizeof(constBufferVertexShader) % 16)));
+	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bufferDesc.MiscFlags = 0;
+	bufferDesc.StructureByteStride = 0;
+	
+	HRESULT hr = device->CreateBuffer(&bufferDesc, 0, &constantBuffer);
+	return !FAILED(hr);
+}
+
 bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11VertexShader*& vShader,
-	ID3D11PixelShader*& pShader, ID3D11InputLayout*& inputLayout)
+	ID3D11PixelShader*& pShader, ID3D11InputLayout*& inputLayout, ID3D11Buffer*& constBuffer)
 {
 	std::string vShaderByteCode;
 	if (!LoadShaders(device, vShader, pShader, vShaderByteCode))
@@ -115,5 +129,11 @@ bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11Vert
 		return false;
 	}
 
+	if (!CreateConstantBuffer(device, constBuffer))
+	{
+		std::cerr << "Error creating constant buffer!" << std::endl;
+		return false;
+	}
+	
 	return true;
 }

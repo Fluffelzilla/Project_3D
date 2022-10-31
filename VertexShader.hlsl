@@ -1,3 +1,9 @@
+cbuffer cBuffer : register(b0)
+{
+	float xOffset;
+	float yOffset;
+};
+
 struct VertexShaderInput
 {
 	float3 position : POSITION;
@@ -13,6 +19,8 @@ struct VertexShaderOutput
 VertexShaderOutput main(VertexShaderInput input)
 {
 	VertexShaderOutput output;
+	input.position.x += xOffset;
+	input.position.y += yOffset;
 	output.position = float4(input.position, 1.0f);
 	output.colour = input.colour;
 	return output;

@@ -18,4 +18,10 @@ struct SimpleVertex
 	}
 };
 
-bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11VertexShader*& vShader, ID3D11PixelShader*& pShader, ID3D11InputLayout*& inputLayout);
+struct constBufferVertexShader
+{
+	float xOffset = 0;
+	float yOffset = 0;
+};
+
+bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11VertexShader*& vShader, ID3D11PixelShader*& pShader, ID3D11InputLayout*& inputLayout, ID3D11Buffer*& constBuffer);

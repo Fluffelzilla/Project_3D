@@ -13,7 +13,7 @@
 
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11VertexShader* vShader,
-	ID3D11PixelShader* pShader, ID3D11InputLayout* inputLayout, ID3D11Buffer* vertexBuffer)
+	ID3D11PixelShader* pShader, ID3D11InputLayout* inputLayout, ID3D11Buffer* vertexBuffer, ID3D11Buffer* constBuffer)
 {
 	float clearColour[4] = { 0, 0, 0, 0 };
 	immediateContext->ClearRenderTargetView(rtv, clearColour);
@@ -21,6 +21,7 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 
 	UINT stride = sizeof(SimpleVertex);
 	UINT offset = 0;
+
 	immediateContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	immediateContext->IASetInputLayout(inputLayout);
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -28,6 +29,17 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	immediateContext->RSSetViewports(1, &viewport);
 	immediateContext->PSSetShader(pShader, nullptr, 0);
 	immediateContext->OMSetRenderTargets(1, &rtv, dsView);
+	
+	//update constant buffer
+
+	constBufferVertexShader data;
+	data.xOffset = 0.0f;
+	data.yOffset = 0.5f;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT hr = immediateContext->Map(constBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	CopyMemory(mappedResource.pData, &data, sizeof(constBufferVertexShader));
+	immediateContext->Unmap(constBuffer, 0);
+	immediateContext->VSSetConstantBuffers(0, 1, &constBuffer);
 
 	immediateContext->Draw(3, 0);
 }
@@ -57,6 +69,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	ID3D11PixelShader* pShader;
 	ID3D11InputLayout* inputLayout;
 	ID3D11Buffer* vertexBuffer;
+	ID3D11Buffer* constBuffer;
 
 	if (!SetupD3D11(WIDTH, HEIGHT, window, device, immediateContext, swapChain, rtv, dsTexture, dsView, viewport))
 	{
@@ -64,7 +77,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
-	if (!SetupPipeline(device, vertexBuffer, vShader, pShader, inputLayout))
+	if (!SetupPipeline(device, vertexBuffer, vShader, pShader, inputLayout, constBuffer))
 	{
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;
@@ -93,7 +106,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 
-		Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout, vertexBuffer);
+		Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout, vertexBuffer, constBuffer);
 
 		//Start Dear ImGui frame
 		ImGui_ImplDX11_NewFrame();
@@ -116,6 +129,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		swapChain->Present(0, 0);
 	}
 
+	constBuffer->Release();
 	vertexBuffer->Release();
 	inputLayout->Release();
 	pShader->Release();
