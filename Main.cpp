@@ -11,6 +11,78 @@
 #include "DeraImGui/imgui_impl_dx11.h"
 #include "DeraImGui/imgui_impl_win32.h"
 
+void clearObjects(ID3D11Device* device, ID3D11DeviceContext* immediateContext, IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
+ID3D11Texture2D* dsTexture, ID3D11DepthStencilView* dsView, ID3D11VertexShader* vShader, ID3D11PixelShader* pShader,
+ID3D11InputLayout* inputLayout, ID3D11Buffer* vertexBuffer, ID3D11Buffer* constBuffer)
+{
+	// Release the constant buffer.
+	if (constBuffer)
+	{
+		constBuffer->Release();
+		constBuffer = 0;
+	}
+	// Release the vertex buffer.
+	if (vertexBuffer)
+	{
+		vertexBuffer->Release();
+		vertexBuffer = 0;
+	}
+	// Release the inputLayout.
+	if (inputLayout)
+	{
+		inputLayout->Release();
+		inputLayout = 0;
+	}
+	// Release the pixel shader.
+	if (pShader)
+	{
+		pShader->Release();
+		pShader = 0;
+	}
+	// Release the vertex shader.
+	if (vShader)
+	{
+		vShader->Release();
+		vShader = 0;
+	}
+	// Release the depth stencil view.
+	if (dsView)
+	{
+		dsView->Release();
+		dsView = 0;
+	}
+	// Release the depth stencil texture.
+	if (dsTexture)
+	{
+		dsTexture->Release();
+		dsTexture = 0;
+	}
+	// Release the render target view.
+	if (rtv)
+	{
+		rtv->Release();
+		rtv = 0;
+	}
+	// Release the swapchain.
+	if (swapChain)
+	{
+		swapChain->Release();
+		swapChain = 0;
+	}
+	// Release the device context.
+	if (immediateContext)
+	{
+		immediateContext->Release();
+		immediateContext = 0;
+	}
+	// Release the device.
+	if (device)
+	{
+		device->Release();
+		device = 0;
+	}
+}
+
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11VertexShader* vShader,
 	ID3D11PixelShader* pShader, ID3D11InputLayout* inputLayout, ID3D11Buffer* vertexBuffer, ID3D11Buffer* constBuffer)
@@ -125,21 +197,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		//Render Draw Data
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-
 		swapChain->Present(0, 0);
 	}
 
-	constBuffer->Release();
-	vertexBuffer->Release();
-	inputLayout->Release();
-	pShader->Release();
-	vShader->Release();
-	dsView->Release();
-	dsTexture->Release();
-	rtv->Release();
-	swapChain->Release();
-	immediateContext->Release();
-	device->Release();
+
+	ImGui_ImplDX11_Shutdown();
+
+	clearObjects(device, immediateContext, swapChain, rtv, dsTexture, dsView, vShader,pShader, inputLayout,	vertexBuffer, constBuffer);
 
 	return 0;
 }
