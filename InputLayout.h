@@ -11,6 +11,7 @@ private:
 	ID3D11InputLayout* inputLayout = nullptr;
 
 public:
+	// =delete gör att de operatona är omöjliga och ska inte gå att göra eller köra
 	InputLayout() = default;
 	~InputLayout();
 	InputLayout(const InputLayout& other) = delete;
