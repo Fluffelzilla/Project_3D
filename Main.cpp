@@ -5,6 +5,7 @@
 #include "Window.h"
 #include "D3D11_imp.h"
 #include "Pipeline.h"
+//#include "InputLayout.h"
 
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11VertexShader* vShader,
@@ -54,13 +55,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	ID3D11InputLayout* inputLayout;
 	ID3D11Buffer* vertexBuffer;
 
+	/*InputLayout* inputLayout;
+	inputLayout->AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	inputLayout->AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
+	inputLayout->FinalizeInputLayout(device,vShader)*/
+
 	if (!SetupD3D11(WIDTH, HEIGHT, window, device, immediateContext, swapChain, rtv, dsTexture, dsView, viewport))
 	{
 		std::cerr << "Failed to setup d3d11!" << std::endl;
 		return -1;
 	}
 
-	if (!SetupPipeline(device, vertexBuffer, vShader, pShader, inputLayout))
+	if (!SetupPipeline(device, vertexBuffer, vShader, pShader,inputLayout))
 	{
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;

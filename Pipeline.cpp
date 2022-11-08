@@ -27,10 +27,11 @@ bool LoadShaders(ID3D11Device* device, ID3D11VertexShader*& vShader, ID3D11Pixel
 		std::cerr << "Failed to create vertex shader!" << std::endl;
 		return false;
 	}
-
+	
 	vShaderByteCode = shaderData;
 	shaderData.clear();
 	reader.close();
+	//
 	reader.open("PixelShader.cso", std::ios::binary | std::ios::ate);
 	if (!reader.is_open())
 	{

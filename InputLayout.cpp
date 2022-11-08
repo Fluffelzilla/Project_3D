@@ -1,5 +1,5 @@
 #include "InputLayout.h"
-#include <cassert>
+//#include <cassert>
 
 InputLayout::~InputLayout()
 {
@@ -14,7 +14,7 @@ void InputLayout::AddInputElement(const std::string& semanticName, DXGI_FORMAT f
 {
 	//assert(format!=float3);
 	semanticNames.push_back(semanticName);
-	D3D11_INPUT_ELEMENT_DESC temp = { semanticName.c_str(), 0, format, 0, 0 + 12 * elements.size(), D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	D3D11_INPUT_ELEMENT_DESC temp = { semanticName.c_str(), 0, format, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 	//obs ej alltid 3 floats ökning!! kan vara två float3 och sedan en float2 ex. position = float3, normal = float3, uvCoord = float2, försök fixa matten så det går och ta bort assert
 	elements.push_back(temp);
 }

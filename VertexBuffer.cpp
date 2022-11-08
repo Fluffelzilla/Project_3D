@@ -31,7 +31,7 @@ VertexBuffer::~VertexBuffer()
 
 void VertexBuffer::Initialize(ID3D11Device* device, UINT sizeOfVertex, UINT nrOfVerticesInBuffer, void* vertexData)
 {
-	device->CreateBuffer(&bufferDesc, &data, &buffer);
+	//device->CreateBuffer(&bufferDesc, &data, &buffer);
 }
 
 UINT VertexBuffer::GetNrOfVertices() const
