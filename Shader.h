@@ -1,5 +1,6 @@
 #pragma once
 #include <d3d11_4.h>
+#include <string>
 
 enum class ShaderType
 {
@@ -26,8 +27,8 @@ private:
 		ID3D11ComputeShader* compute;
 	} shader;
 
-	ID3DBlob* shaderBlob = nullptr;
-
+	//ID3DBlob* shaderBlob = nullptr;
+	std::string* shaderByteCode;
 public:
 	Shader() = default;
 	~Shader();

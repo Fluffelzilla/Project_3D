@@ -1,27 +1,58 @@
 #include "Shader.h"
 #include <fstream>
-#include <string>
 #include <iostream>
 
 Shader::~Shader()
 {
-	if (shaderBlob)
+	if (shaderByteCode)
 	{
-		shaderBlob->Release();
-		shaderBlob = 0;
+		delete(shaderByteCode);
+		shaderByteCode = 0;
+	}
+
+	if (shader.vertex)
+	{
+		shader.vertex->Release();
+		shader.vertex = 0;
+	}
+	if (shader.compute)
+	{
+		shader.compute->Release();
+		shader.compute = 0;
+	}
+	if (shader.domain)
+	{
+		shader.domain->Release();
+		shader.domain = 0;
+	}
+	if (shader.geometry)
+	{
+		shader.geometry->Release();
+		shader.geometry = 0;
+	}
+	if (shader.hull)
+	{
+		shader.hull->Release();
+		shader.hull = 0;
+	}
+	if (shader.pixel)
+	{
+		shader.pixel->Release();
+		shader.pixel = 0;
 	}
 
 }
 
 Shader::Shader(ID3D11Device* device, ShaderType shaderType, const void* dataPtr, size_t dataSize)
+	:type(shaderType)
 {
-	type = shaderType;
-
+	Initialize(device, type, dataPtr, dataSize);
 }
 
 Shader::Shader(ID3D11Device* device, ShaderType shaderType, const char* csoPath)
+	:type(shaderType)
 {
-
+	Initialize(device, type, csoPath);
 }
 
 void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const void* dataPtr, size_t dataSize)
@@ -59,14 +90,14 @@ void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const void*
 
 void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const char* csoPath)
 {
+
 	std::string shaderData;
 	std::ifstream reader;
 	reader.open(csoPath, std::ios::binary | std::ios::ate);
-	//if (!reader.is_open())
-	//{
-	//	std::cerr << "Could not open VS file!" << std::endl;
-	//	return false;
-	//}
+	if (!reader.is_open())
+	{
+		std::cerr << "Could not open VS file!" << std::endl;
+	}
 	reader.seekg(0, std::ios::end);
 	shaderData.reserve(static_cast<unsigned int>(reader.tellg()));
 	reader.seekg(0, std::ios::beg);
@@ -74,22 +105,29 @@ void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const char*
 	shaderData.assign((std::istreambuf_iterator<char>(reader)),
 		std::istreambuf_iterator<char>());
 
-	//vShaderByteCode = shaderData;
+	shaderByteCode = &shaderData;
+	Initialize(device, shaderType, shaderData.c_str(), shaderData.length());
+
 	shaderData.clear();
 	reader.close();
-
 }
 
 const void* Shader::GetShaderByteData() const
 {
-	return nullptr;
+	return shaderByteCode;
 }
 
 size_t Shader::GetShaderByteSize() const
 {
-	return size_t();
+	return shaderByteCode->length();
 }
 
 void Shader::BindShader(ID3D11DeviceContext* context) const
 {
+	context->PSSetShader(shader.pixel, nullptr, 0);
+	context->VSSetShader(shader.vertex, nullptr, 0);
+	context->HSSetShader(shader.hull, nullptr, 0);
+	context->DSSetShader(shader.domain, nullptr, 0);
+	context->GSSetShader(shader.geometry, nullptr, 0);
+	context->CSSetShader(shader.compute, nullptr, 0);
 }
