@@ -54,6 +54,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	ID3D11PixelShader* pShader;
 	ID3D11InputLayout* inputLayout;
 	ID3D11Buffer* vertexBuffer;
+	//ID3D11Buffer* constBuffer;
 
 	/*InputLayout* inputLayout;
 	inputLayout->AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);

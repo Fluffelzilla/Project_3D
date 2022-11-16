@@ -1,3 +1,9 @@
+cbuffer cBuffer
+{
+	float xOffset;
+	float yOffset;
+};
+
 struct VertexShaderInput
 {
 	float3 position : POSITION;

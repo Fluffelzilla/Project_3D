@@ -1,5 +1,10 @@
 #pragma once
 #include <d3d11_4.h>
+//struct cbVertexShader
+//{
+//	float xOffset = 0;
+//	float yOffset = 0;
+//};
 
 class ConstantBuffer
 {

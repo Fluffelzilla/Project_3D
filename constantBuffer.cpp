@@ -45,12 +45,12 @@ ID3D11Buffer* ConstantBuffer::GetBuffer() const
 
 void ConstantBuffer::UpdateBuffer(ID3D11DeviceContext* context, void* data)
 {
-	//data.xOffset = 0.0f;
-	//data.yOffset = 0.5f;
-	//D3D11_MAPPED_SUBRESOURCE mappedResource;
-	//HRESULT hr = context->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	//CopyMemory(mappedResource.pData, &data, sizeof(constBufferVertexShader));
-	//context->Unmap(buffer, 0);
-	//context->VSSetConstantBuffers(0, 1, &buffer);
+	data.xOffset = 0.0f;
+	data.yOffset = 0.5f;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT hr = context->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	CopyMemory(mappedResource.pData, &data, sizeof(constBufferVertexShader));
+	context->Unmap(buffer, 0);
+	context->VSSetConstantBuffers(0, 1, &buffer);
 
 }
