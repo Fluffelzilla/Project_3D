@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="constantBuffer.cpp" />
     <ClCompile Include="D3D11_imp.cpp" />
+    <ClCompile Include="DepthBuffer.cpp" />
     <ClCompile Include="DeraImGui\imgui.cpp" />
     <ClCompile Include="DeraImGui\imgui_draw.cpp" />
     <ClCompile Include="DeraImGui\imgui_impl_dx11.cpp" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="constantBuffer.h" />
     <ClInclude Include="D3D11_imp.h" />
+    <ClInclude Include="DepthBuffer.h" />
     <ClInclude Include="DeraImGui\imconfig.h" />
     <ClInclude Include="DeraImGui\imgui.h" />
     <ClInclude Include="DeraImGui\imgui_impl_dx11.h" />
