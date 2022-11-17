@@ -2,7 +2,7 @@
 
 DepthBuffer::DepthBuffer(ID3D11Device* device, UINT width, UINT height, bool hasSRV)
 {
-
+	Initialize(device, width, height, hasSRV);
 }
 
 DepthBuffer::~DepthBuffer()
@@ -21,14 +21,29 @@ DepthBuffer::~DepthBuffer()
 
 void DepthBuffer::Initialize(ID3D11Device* device, UINT width, UINT height, bool hasSRV, UINT arraySize)
 {
+	D3D11_TEXTURE2D_DESC textureDesc;
+	textureDesc.Width = width;
+	textureDesc.Height = height;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.SampleDesc.Quality = 0;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = 0;
+	device->CreateTexture2D(&textureDesc, nullptr, &texture);
+
 	for (int i = 0; i < arraySize; i++)
 	{
-		device->CreateDepthStencilView(0, 0, &depthStencilViews[i]);
+		device->CreateDepthStencilView(texture, 0, &depthStencilViews[i]);
 	}
-	
+
 	if (hasSRV = true)
 	{
-		device->CreateShaderResourceView(0, 0, &srv);
+		//ska det vara 0?
+		device->CreateShaderResourceView(texture, 0, &srv);
 	}
 }
 
