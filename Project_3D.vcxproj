@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="constantBuffer.cpp" />
     <ClCompile Include="D3D11_imp.cpp" />
     <ClCompile Include="DepthBuffer.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="constantBuffer.h" />
     <ClInclude Include="D3D11_imp.h" />
     <ClInclude Include="DepthBuffer.h" />
