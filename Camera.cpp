@@ -2,6 +2,9 @@
 
 void Camera::MoveInDirection(float amount, const DirectX::XMFLOAT3& direction)
 {
+	position.x += direction.x*amount;
+	position.y += direction.y * amount;
+	position.z += direction.z * amount;
 }
 
 void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)
@@ -18,18 +21,22 @@ void Camera::Initialize(ID3D11Device* device, const ProjectionInfo& projectionIn
 
 void Camera::MoveForward(float amount)
 {
+	MoveInDirection(amount,forward);
 }
 
 void Camera::MoveRight(float amount)
 {
+	MoveInDirection(amount, right);
 }
 
 void Camera::MoveUp(float amount)
 {
+	MoveInDirection(amount, up);
 }
 
 void Camera::RotateForward(float amount)
 {
+	
 }
 
 void Camera::RotateRight(float amount)
@@ -42,22 +49,22 @@ void Camera::RotateUp(float amount)
 
 const DirectX::XMFLOAT3& Camera::GetPosition() const
 {
-	// // O: insert return statement here
+	return position;
 }
 
 const DirectX::XMFLOAT3& Camera::GetForward() const
 {
-	// // O: insert return statement here
+	return forward;
 }
 
 const DirectX::XMFLOAT3& Camera::GetRight() const
 {
-	// // O: insert return statement here
+	return right;
 }
 
 const DirectX::XMFLOAT3& Camera::GetUp() const
 {
-	// // O: insert return statement here
+	return right;
 }
 
 void Camera::UpdateInternalConstantBuffer(ID3D11DeviceContext* context)
