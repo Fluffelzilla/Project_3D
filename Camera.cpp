@@ -14,6 +14,11 @@ void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)
 
 Camera::Camera(ID3D11Device* device, const ProjectionInfo& projectionInfo, const DirectX::XMFLOAT3& initialPosition)
 {
+	projInfo.aspectRatio = projectionInfo.aspectRatio;
+	projInfo.farZ = projectionInfo.farZ;
+	projInfo.fovAngleY = projectionInfo.fovAngleY;
+	projInfo.nearZ = projectionInfo.nearZ;
+
 	Initialize(device, projectionInfo, initialPosition);
 }
 
@@ -28,7 +33,7 @@ void Camera::Initialize(ID3D11Device* device, const ProjectionInfo& projectionIn
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; //CPU is allowed to write to this buffer
 	bufferDesc.MiscFlags = 0; // unused
 	bufferDesc.StructureByteStride = 0; // unused
-
+	device->CreateBuffer(&bufferDesc, NULL, &cameraBuffer.GetBuffer())
 }
 
 void Camera::MoveForward(float amount)
@@ -81,6 +86,7 @@ const DirectX::XMFLOAT3& Camera::GetUp() const
 
 void Camera::UpdateInternalConstantBuffer(ID3D11DeviceContext* context)
 {
+	
 	matrixInfo* dataptr;
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -99,7 +105,7 @@ void Camera::UpdateInternalConstantBuffer(ID3D11DeviceContext* context)
 	context->Unmap(cameraBuffer.GetBuffer(), 0);
 	//Lock new data att CPU and give acces back to the GPU
 
-	context->VSSetConstantBuffers(0, 1, &cameraBuffer);
+	context->VSSetConstantBuffers(0, 1, &cameraBuffer.GetBuffer());
 }
 
 ID3D11Buffer* Camera::GetConstantBuffer() const
