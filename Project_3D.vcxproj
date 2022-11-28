@@ -151,6 +151,7 @@
     <ClCompile Include="DeraImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="DeraImGui\imgui_tables.cpp" />
     <ClCompile Include="DeraImGui\imgui_widgets.cpp" />
+    <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pipeline.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="DeraImGui\imstb_rectpack.h" />
     <ClInclude Include="DeraImGui\imstb_textedit.h" />
     <ClInclude Include="DeraImGui\imstb_truetype.h" />
+    <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Shader.h" />
