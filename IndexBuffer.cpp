@@ -26,7 +26,7 @@ void IndexBuffer::Initialize(ID3D11Device* device, size_t nrOfIndicesInBuffer, u
 	bufferDesc.StructureByteStride = 0;
 
 	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = indexData; // kan vara fel, ska var indices men hur får jag tag i dem och inte antalet?
+	data.pSysMem = indexData; // kan vara fel, ska var indices.
 	data.SysMemPitch = 0;
 	data.SysMemSlicePitch = 0;
 
