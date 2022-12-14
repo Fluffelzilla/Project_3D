@@ -11,11 +11,8 @@ void SubMesh::Initialize(size_t startIndexValue, size_t nrOfIndicesInSubMesh, ID
 
 void SubMesh::PerformDrawCall(ID3D11DeviceContext* context) const
 {
-    //saknas något att rita, som är beroende av vertex data?
-    for (int i = 0; i < nrOfIndices; i++)
-    {
-        //context->Draw()
-    }
+    //TODO: Check if last input is correct!!
+    context->DrawIndexed(nrOfIndices, startIndex, 0);
 }
 
 ID3D11ShaderResourceView* SubMesh::GetAmbientSRV() const

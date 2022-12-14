@@ -6,10 +6,17 @@
 
 struct ProjectionInfo
 {
-	float fovAngleY = 0.0f;
-	float aspectRatio = 0.0f;
+	float fovAngleY = 0.0f; //field of view
+	float aspectRatio = 0.0f; //brädden på fönstret * höjden på fönstret
 	float nearZ = 0.0f;
 	float farZ = 0.0f;
+};
+
+struct MatrixInfo
+{
+	DirectX::XMMATRIX world;
+	DirectX::XMMATRIX viewPro;
+	DirectX::XMFLOAT3 cPosition;
 };
 
 class Camera
@@ -20,6 +27,7 @@ private:
 	DirectX::XMFLOAT3 right = { 1.0f, 0.0f, 0.0f };
 	DirectX::XMFLOAT3 up = { 0.0f, 1.0f, 0.0f };
 	ProjectionInfo projInfo;
+	MatrixInfo matrixInfo;
 
 	ConstantBuffer cameraBuffer;
 

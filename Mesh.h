@@ -2,6 +2,7 @@
 #include "SubMesh.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include <vector>
 
 struct MeshData
 {
@@ -26,7 +27,7 @@ struct MeshData
 		ID3D11ShaderResourceView* diffuseTextureSRV;
 		ID3D11ShaderResourceView* specularTextureSRV;
 	};
-
+	
 	std::vector<SubMeshInfo> subMeshInfo;
 };
 

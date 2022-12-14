@@ -9,31 +9,37 @@ void Camera::MoveInDirection(float amount, const DirectX::XMFLOAT3& direction)
 
 void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)
 {
-
+	DirectX::XMMatrixRotationAxis(DirectX::XMLoadFloat3(&axis), amount);
 }
 
 Camera::Camera(ID3D11Device* device, const ProjectionInfo& projectionInfo, const DirectX::XMFLOAT3& initialPosition)
 {
-	projInfo.aspectRatio = projectionInfo.aspectRatio;
-	projInfo.farZ = projectionInfo.farZ;
-	projInfo.fovAngleY = projectionInfo.fovAngleY;
-	projInfo.nearZ = projectionInfo.nearZ;
-
 	Initialize(device, projectionInfo, initialPosition);
 }
 
 void Camera::Initialize(ID3D11Device* device, const ProjectionInfo& projectionInfo, const DirectX::XMFLOAT3& initialPosition)
 {
-	cameraBuffer.Initialize(device, cameraBuffer.GetSize());
+	position = initialPosition;
+	forward = DirectX::XMFLOAT3(0, 0, 1);
+	up = DirectX::XMFLOAT3(0, 1, 0);
+	right = DirectX::XMFLOAT3(1, 0, 0);
 
-	D3D11_BUFFER_DESC bufferDesc;
-	bufferDesc.ByteWidth = sizeof(cameraBuffer.GetSize());
-	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	bufferDesc.MiscFlags = 0;
-	bufferDesc.StructureByteStride = 0;
-	//device->CreateBuffer(&bufferDesc, NULL, &cameraBuffer.GetBuffer())
+	projInfo.aspectRatio = projectionInfo.aspectRatio;
+	projInfo.farZ = projectionInfo.farZ;
+	projInfo.fovAngleY = projectionInfo.fovAngleY;
+	projInfo.nearZ = projectionInfo.nearZ;
+
+	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&position), DirectX::XMLoadFloat3(&forward), DirectX::XMLoadFloat3(&up));
+	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(projInfo.fovAngleY, projInfo.aspectRatio, projInfo.nearZ, projInfo.farZ);
+	DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+	DirectX::XMMATRIX rotationY = DirectX::XMMatrixRotationY(0);
+
+	matrixInfo.viewPro = DirectX::XMMatrixMultiplyTranspose(view, projection);
+	matrixInfo.cPosition = position;
+	matrixInfo.world = DirectX::XMMatrixMultiply(translation, rotationY);
+
+
+	cameraBuffer.Initialize(device, cameraBuffer.GetSize());
 }
 
 void Camera::MoveForward(float amount)
@@ -53,15 +59,17 @@ void Camera::MoveUp(float amount)
 
 void Camera::RotateForward(float amount)
 {
-	
+	DirectX::XMMatrixRotationZ(amount);
 }
 
 void Camera::RotateRight(float amount)
 {
+	DirectX::XMMatrixRotationY(amount);
 }
 
 void Camera::RotateUp(float amount)
 {
+	DirectX::XMMatrixRotationX(amount);
 }
 
 const DirectX::XMFLOAT3& Camera::GetPosition() const
@@ -81,38 +89,23 @@ const DirectX::XMFLOAT3& Camera::GetRight() const
 
 const DirectX::XMFLOAT3& Camera::GetUp() const
 {
-	return right;
+	return up;
 }
 
 void Camera::UpdateInternalConstantBuffer(ID3D11DeviceContext* context)
 {
-	//matrixInfo* dataptr;
-
-	//D3D11_MAPPED_SUBRESOURCE mappedResource;
-	////fill mappedResource whit zero values, second input is the amound to set to zero
-	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-
-	//context->Map(cameraBuffer.GetBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	////get a pointer to the data contained in a subresource, and denies the GPU access to that subresource
-
-	//dataptr = (matrixInfo*)mappedResource.pData;
-	//dataptr->world = DirectX::XMMatrixTranspose(mainCamera.getWorld());
-	//dataptr->viewPro = mainCamera.getViewProjection();
-	//dataptr->cPosition = mainCamera.getCameraPosition();
-	////new data input in CPU
-
-	//context->Unmap(cameraBuffer.GetBuffer(), 0);
-	////Lock new data att CPU and give acces back to the GPU
-
-	//context->VSSetConstantBuffers(0, 1, &cameraBuffer.GetBuffer());
+	//TODO: check if matrixInfo contains correkt info!!
+	cameraBuffer.UpdateBuffer(context, &matrixInfo);
 }
 
 ID3D11Buffer* Camera::GetConstantBuffer() const
 {
-	return nullptr;
+	return cameraBuffer.GetBuffer();
 }
 
 DirectX::XMFLOAT4X4 Camera::GetViewProjectionMatrix() const
 {
-	return DirectX::XMFLOAT4X4();
+	DirectX::XMFLOAT4X4 temp;
+	DirectX::XMStoreFloat4x4(&temp,matrixInfo.viewPro);
+	return temp;
 }
