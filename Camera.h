@@ -4,6 +4,8 @@
 
 #include "ConstantBuffer.h"
 
+//TODO: All rotation info i .cpp är inte sparat i någon variabel eller liknande, detta MÅSTE fixas!!!
+
 struct ProjectionInfo
 {
 	float fovAngleY = 0.0f; //field of view
