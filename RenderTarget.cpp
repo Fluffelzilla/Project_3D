@@ -2,6 +2,21 @@
 
 RenderTarget::~RenderTarget()
 {
+	if (texture!=nullptr)
+	{
+		texture->Release();
+		texture = 0;
+	}
+	if (rtv != nullptr)
+	{
+		rtv->Release();
+		rtv = 0;
+	}
+	if (srv != nullptr)
+	{
+		srv->Release();
+		srv = 0;
+	}
 }
 
 void RenderTarget::Initialize(ID3D11Device* device, UINT width, UINT height, DXGI_FORMAT format, bool hasSRV)
