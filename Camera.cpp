@@ -59,17 +59,20 @@ void Camera::MoveUp(float amount)
 
 void Camera::RotateForward(float amount)
 {
-	DirectX::XMMatrixRotationZ(amount);
+	RotateAroundAxis(amount, forward);
+	//DirectX::XMMatrixRotationZ(amount);
 }
 
 void Camera::RotateRight(float amount)
 {
-	DirectX::XMMatrixRotationY(amount);
+	RotateAroundAxis(amount, right);
+	//DirectX::XMMatrixRotationY(amount);
 }
 
 void Camera::RotateUp(float amount)
 {
-	DirectX::XMMatrixRotationX(amount);
+	RotateAroundAxis(amount, up);
+	//DirectX::XMMatrixRotationX(amount);
 }
 
 const DirectX::XMFLOAT3& Camera::GetPosition() const

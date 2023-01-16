@@ -5,6 +5,7 @@
 #include "ConstantBuffer.h"
 
 //TODO: All rotation info i .cpp är inte sparat i någon variabel eller liknande, detta MÅSTE fixas!!!
+//kanske är fixat, måste testas!!!
 
 struct ProjectionInfo
 {
