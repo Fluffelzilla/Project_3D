@@ -160,6 +160,7 @@
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderResourceTexture.cpp" />
     <ClCompile Include="SubMesh.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderResourceTexture.h" />
     <ClInclude Include="SubMesh.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="Window.h" />
