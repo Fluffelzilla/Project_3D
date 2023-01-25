@@ -2,8 +2,10 @@
 
 void SpotLightCollection::Initialize(ID3D11Device* device, const SpotLightData& lightInfo)
 {
-	//lightInfo.perLightInfo.size();
-	//lightBuffer.Initialize(device, lightInfo.perLightInfo.size(),)
+	SpotLightData spotData;
+	spotData.perLightInfo = lightInfo.perLightInfo;
+	spotData.shadowMapInfo = lightInfo.shadowMapInfo;
+	
 }
 
 void SpotLightCollection::UpdateLightBuffers(ID3D11DeviceContext* context)
