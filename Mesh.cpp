@@ -6,14 +6,21 @@ void Mesh::Initialize(ID3D11Device* device, const MeshData& meshInfo)
 	data.subMeshInfo = meshInfo.subMeshInfo;
 	data.indexInfo = meshInfo.indexInfo;
 	data.vertexInfo = meshInfo.vertexInfo;
+	data.subInfo = meshInfo.subInfo;
 
 	vertexBuffer.Initialize(device, data.vertexInfo.sizeOfVertex, data.vertexInfo.nrOfVerticesInBuffer,data.vertexInfo.vertexData);
 	indexBuffer.Initialize(device, data.indexInfo.nrOfIndicesInBuffer, data.indexInfo.indexData);
-	//subMeshes[1].Initialize()
+
+	for (int i = 0; i < data.subInfo.nrOfIndicesInSubMesh; i++)
+	{
+		subMeshes[i].Initialize(data.subInfo.startIndexValue, data.subInfo.nrOfIndicesInSubMesh, data.subInfo.ambientTextureSRV, data.subInfo.diffuseTextureSRV, data.subInfo.specularTextureSRV);
+	}
+	
 }
 
 void Mesh::BindMeshBuffers(ID3D11DeviceContext* context) const
 {
+
 	context->IASetIndexBuffer(indexBuffer.GetBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
 	//vill inte funka vid direkt inmatning, måste skapa en ny buffer och uint...

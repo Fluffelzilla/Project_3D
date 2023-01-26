@@ -26,7 +26,7 @@ struct MeshData
 		ID3D11ShaderResourceView* ambientTextureSRV;
 		ID3D11ShaderResourceView* diffuseTextureSRV;
 		ID3D11ShaderResourceView* specularTextureSRV;
-	};
+	} subInfo;
 	
 	std::vector<SubMeshInfo> subMeshInfo;
 };
