@@ -9,13 +9,20 @@ void Mesh::Initialize(ID3D11Device* device, const MeshData& meshInfo)
 
 	vertexBuffer.Initialize(device, data.vertexInfo.sizeOfVertex, data.vertexInfo.nrOfVerticesInBuffer,data.vertexInfo.vertexData);
 	indexBuffer.Initialize(device, data.indexInfo.nrOfIndicesInBuffer, data.indexInfo.indexData);
-	//subMeshes[1].Initialize(data.subMeshInfo.)
+	//subMeshes[1].Initialize()
 }
 
 void Mesh::BindMeshBuffers(ID3D11DeviceContext* context) const
 {
 	context->IASetIndexBuffer(indexBuffer.GetBuffer(), DXGI_FORMAT_R32_UINT, 0);
-	context->IASetVertexBuffers(0, 1, vertexBuffer.GetBuffer(), vertexBuffer.GetVertexSize(), 0);
+
+	//vill inte funka vid direkt inmatning, måste skapa en ny buffer och uint...
+	ID3D11Buffer* buffer = vertexBuffer.GetBuffer();
+	const UINT size = vertexBuffer.GetVertexSize();
+	context->IASetVertexBuffers(0, 1, &buffer, &size, 0);
+
+	buffer->Release();
+	buffer = 0;
 }
 
 void Mesh::PerformSubMeshDrawCall(ID3D11DeviceContext* context, size_t subMeshIndex) const
