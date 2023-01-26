@@ -13,6 +13,7 @@ void Mesh::Initialize(ID3D11Device* device, const MeshData& meshInfo)
 
 void Mesh::BindMeshBuffers(ID3D11DeviceContext* context) const
 {
+	
 }
 
 void Mesh::PerformSubMeshDrawCall(ID3D11DeviceContext* context, size_t subMeshIndex) const
@@ -22,8 +23,7 @@ void Mesh::PerformSubMeshDrawCall(ID3D11DeviceContext* context, size_t subMeshIn
 
 size_t Mesh::GetNrOfSubMeshes() const
 {
-	//TODO: är troligen fel inmatat... fíxa rätt retur värde!!!
-	return sizeof(subMeshes);
+	return subMeshes.size();
 }
 
 ID3D11ShaderResourceView* Mesh::GetAmbientSRV(size_t subMeshIndex) const
