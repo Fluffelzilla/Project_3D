@@ -9,11 +9,13 @@ void Mesh::Initialize(ID3D11Device* device, const MeshData& meshInfo)
 
 	vertexBuffer.Initialize(device, data.vertexInfo.sizeOfVertex, data.vertexInfo.nrOfVerticesInBuffer,data.vertexInfo.vertexData);
 	indexBuffer.Initialize(device, data.indexInfo.nrOfIndicesInBuffer, data.indexInfo.indexData);
+	//subMeshes[1].Initialize(data.subMeshInfo.)
 }
 
 void Mesh::BindMeshBuffers(ID3D11DeviceContext* context) const
 {
-	
+	context->IASetIndexBuffer(indexBuffer.GetBuffer(), DXGI_FORMAT_R32_UINT, 0);
+	context->IASetVertexBuffers(0, 1, vertexBuffer.GetBuffer(), vertexBuffer.GetVertexSize(), 0);
 }
 
 void Mesh::PerformSubMeshDrawCall(ID3D11DeviceContext* context, size_t subMeshIndex) const
