@@ -17,6 +17,7 @@ void Mesh::BindMeshBuffers(ID3D11DeviceContext* context) const
 
 void Mesh::PerformSubMeshDrawCall(ID3D11DeviceContext* context, size_t subMeshIndex) const
 {
+	subMeshes[subMeshIndex].PerformDrawCall(context);
 }
 
 size_t Mesh::GetNrOfSubMeshes() const
