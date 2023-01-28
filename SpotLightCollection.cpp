@@ -3,16 +3,18 @@
 void SpotLightCollection::Initialize(ID3D11Device* device, const SpotLightData& lightInfo)
 {
 	SpotLightData spotData;
+	
 	spotData.perLightInfo = lightInfo.perLightInfo;
 	spotData.shadowMapInfo = lightInfo.shadowMapInfo;
-	
+	lightBuffer.Initialize(device, sizeof(spotData.perLightInfo), spotData.perLightInfo.size());
+	//TODO: behöver hight och width i shadowmap initialize!!!!
+	shadowMaps.Initialize(device, 0, 0);
 }
 
 void SpotLightCollection::UpdateLightBuffers(ID3D11DeviceContext* context)
 {
-
-	//TODO: assign acutal data insted of nullptr!!!
-	lightBuffer.UpdateBuffer(context, nullptr);
+	//TODO:är bufferdata rätt och inehåller den rätt saker?
+	lightBuffer.UpdateBuffer(context, &bufferData);
 }
 
 UINT SpotLightCollection::GetNrOfLights() const
