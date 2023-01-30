@@ -1,8 +1,3 @@
-//cbuffer cBuffer
-//{
-//	float xOffset;
-//	float yOffset;
-//};
 
 struct VertexShaderInput
 {
