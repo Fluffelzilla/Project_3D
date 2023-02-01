@@ -12,7 +12,7 @@ InputLayout::~InputLayout()
 void InputLayout::AddInputElement(const std::string& semanticName, DXGI_FORMAT format)
 {
 	semanticNames.push_back(semanticName);
-	D3D11_INPUT_ELEMENT_DESC temp = { semanticName.c_str(), 0, format, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	D3D11_INPUT_ELEMENT_DESC temp = { semanticName.c_str(), 0, format, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0};
 	elements.push_back(temp);
 }
 

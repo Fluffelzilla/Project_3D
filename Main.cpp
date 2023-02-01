@@ -55,8 +55,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	ID3D11Buffer* vertexBuffer;
 	InputLayout inputLayout;
 
-	inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
-	inputLayout.AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
+
 
 	if (!SetupD3D11(WIDTH, HEIGHT, window, device, immediateContext, swapChain, rtv, dsTexture, dsView, viewport))
 	{
@@ -69,6 +68,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;
 	}
+	inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	inputLayout.AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
 	inputLayout.FinalizeInputLayout(device, vShader, sizeof(vShader));
 
 	MSG msg = { };
