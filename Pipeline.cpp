@@ -68,6 +68,13 @@ bool LoadShaders(ID3D11Device* device, ID3D11VertexShader*& vShader, ID3D11Pixel
 //	return !FAILED(hr);
 //}
 
+void CreateInputLayout(ID3D11Device* device, InputLayout& inputLayout, const std::string& vShaderByteCode)
+{
+	inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	inputLayout.AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
+	inputLayout.FinalizeInputLayout(device, vShaderByteCode.c_str(), vShaderByteCode.size());
+}
+
 bool CreateVertexBuffer(ID3D11Device* device, ID3D11Buffer*& vertexBuffer)
 {
 	SimpleVertex triangle[] =
@@ -95,7 +102,7 @@ bool CreateVertexBuffer(ID3D11Device* device, ID3D11Buffer*& vertexBuffer)
 }
 
 bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11VertexShader*& vShader,
-	ID3D11PixelShader*& pShader)
+	ID3D11PixelShader*& pShader, InputLayout &inputLayout)
 {
 	std::string vShaderByteCode;
 	if (!LoadShaders(device, vShader, pShader, vShaderByteCode))
@@ -104,11 +111,7 @@ bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11Vert
 		return false;
 	}
 
-	//if (!CreateInputLayout(device, inputLayout, vShaderByteCode))
-	//{
-	//	std::cerr << "Error creating input layout!" << std::endl;
-	//	return false;
-	//}
+	CreateInputLayout(device, inputLayout, vShaderByteCode);
 
 	if (!CreateVertexBuffer(device, vertexBuffer))
 	{

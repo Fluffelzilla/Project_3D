@@ -63,14 +63,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
-	if (!SetupPipeline(device, vertexBuffer, vShader, pShader))
+	if (!SetupPipeline(device, vertexBuffer, vShader, pShader,inputLayout))
 	{
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;
 	}
-	inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
-	inputLayout.AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
-	inputLayout.FinalizeInputLayout(device, vShader, sizeof(vShader));
+	//inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	//inputLayout.AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
+	//inputLayout.FinalizeInputLayout(device, vShader, sizeof(vShader));
 
 	MSG msg = { };
 
