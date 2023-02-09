@@ -5,7 +5,9 @@
 #include "Window.h"
 #include "D3D11_imp.h"
 #include "Pipeline.h"
+
 #include "InputLayout.h"
+#include "VertexBuffer.h" 
 
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11VertexShader* vShader,
@@ -52,8 +54,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	D3D11_VIEWPORT viewport;
 	ID3D11VertexShader* vShader;
 	ID3D11PixelShader* pShader;
-	ID3D11Buffer* vertexBuffer;
+	//ID3D11Buffer* vertexBuffer;
 	InputLayout inputLayout;
+	VertexBuffer vertexBuffer;
 
 
 
@@ -68,9 +71,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;
 	}
-	//inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
-	//inputLayout.AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
-	//inputLayout.FinalizeInputLayout(device, vShader, sizeof(vShader));
 
 	MSG msg = { };
 
@@ -82,11 +82,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 
-		Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer);
+		Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer());
 		swapChain->Present(0, 0);
 	}
 
-	vertexBuffer->Release();
+	vertexBuffer.~VertexBuffer();
 	inputLayout.~InputLayout();
 	pShader->Release();
 	vShader->Release();

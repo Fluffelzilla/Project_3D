@@ -3,6 +3,7 @@
 #include <array>
 #include <d3d11.h>
 #include "InputLayout.h"
+#include "VertexBuffer.h" 
 
 struct SimpleVertex
 {
@@ -19,4 +20,4 @@ struct SimpleVertex
 	}
 };
 
-bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11VertexShader*& vShader, ID3D11PixelShader*& pShader, InputLayout& inputLayout);
+bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11VertexShader*& vShader, ID3D11PixelShader*& pShader, InputLayout& inputLayout);

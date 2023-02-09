@@ -75,7 +75,7 @@ void CreateInputLayout(ID3D11Device* device, InputLayout& inputLayout, const std
 	inputLayout.FinalizeInputLayout(device, vShaderByteCode.c_str(), vShaderByteCode.size());
 }
 
-bool CreateVertexBuffer(ID3D11Device* device, ID3D11Buffer*& vertexBuffer)
+void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 {
 	SimpleVertex triangle[] =
 	{
@@ -84,24 +84,10 @@ bool CreateVertexBuffer(ID3D11Device* device, ID3D11Buffer*& vertexBuffer)
 		{ {-0.5, -0.5f, 0.0f}, {1, 0, 0}}
 	};
 
-	D3D11_BUFFER_DESC bufferDesc;
-	bufferDesc.ByteWidth = sizeof(triangle);
-	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.CPUAccessFlags = 0;
-	bufferDesc.MiscFlags = 0;
-	bufferDesc.StructureByteStride = 0;
-
-	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = triangle;
-	data.SysMemPitch = 0;
-	data.SysMemSlicePitch = 0;
-
-	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
-	return !FAILED(hr);
+	vertexBuffer.Initialize(device, sizeof(triangle), 3,triangle);
 }
 
-bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11VertexShader*& vShader,
+bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11VertexShader*& vShader,
 	ID3D11PixelShader*& pShader, InputLayout &inputLayout)
 {
 	std::string vShaderByteCode;
@@ -113,11 +99,7 @@ bool SetupPipeline(ID3D11Device* device, ID3D11Buffer*& vertexBuffer, ID3D11Vert
 
 	CreateInputLayout(device, inputLayout, vShaderByteCode);
 
-	if (!CreateVertexBuffer(device, vertexBuffer))
-	{
-		std::cerr << "Error creating vertex buffer!" << std::endl;
-		return false;
-	}
+	CreateVertexBuffer(device, vertexBuffer);
 
 	return true;
 }
