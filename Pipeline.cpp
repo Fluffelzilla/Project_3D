@@ -71,6 +71,7 @@ void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 		{ {-0.5, -0.5f, 0.0f}, {1, 0, 0}}
 	};
 
+
 	//TODO: ta bort hårdkodad antal verticer!
 	vertexBuffer.Initialize(device, sizeof(triangle), 3, triangle);
 }
