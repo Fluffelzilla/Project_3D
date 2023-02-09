@@ -71,7 +71,8 @@ void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 		{ {-0.5, -0.5f, 0.0f}, {1, 0, 0}}
 	};
 
-	vertexBuffer.Initialize(device, sizeof(triangle), 3,triangle);
+	//TODO: ta bort hårdkodad antal verticer!
+	vertexBuffer.Initialize(device, sizeof(triangle), 3, triangle);
 }
 
 bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11VertexShader*& vShader,
