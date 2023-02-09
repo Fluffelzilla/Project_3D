@@ -12,7 +12,7 @@ VertexBuffer::~VertexBuffer()
 	if (buffer)
 	{
 		buffer->Release();
-		buffer = 0;
+		buffer = nullptr;
 	}
 }
 

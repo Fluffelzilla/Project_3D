@@ -55,19 +55,6 @@ bool LoadShaders(ID3D11Device* device, ID3D11VertexShader*& vShader, ID3D11Pixel
 	return true;
 }
 
-//bool CreateInputLayout(ID3D11Device* device, ID3D11InputLayout*& inputLayout, const std::string& vShaderByteCode)
-//{
-//	D3D11_INPUT_ELEMENT_DESC inputDesc[2] =
-//	{
-//		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-//		{"COLOUR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
-//	};
-//
-//	HRESULT hr = device->CreateInputLayout(inputDesc, 2, vShaderByteCode.c_str(), vShaderByteCode.length(), &inputLayout);
-//
-//	return !FAILED(hr);
-//}
-
 void CreateInputLayout(ID3D11Device* device, InputLayout& inputLayout, const std::string& vShaderByteCode)
 {
 	inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
