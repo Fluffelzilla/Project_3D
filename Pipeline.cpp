@@ -77,7 +77,18 @@ void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 }
 void CreateCamera(Camera& camera, ID3D11Device* device)
 {
-	//camera.Initialize(device )
+	ProjectionInfo projectionInfo;
+	projectionInfo.aspectRatio = 1;
+	projectionInfo.fovAngleY = 1;
+	projectionInfo.farZ = 2;
+	projectionInfo.nearZ = 1;
+
+	camera.MoveForward(10);
+
+	camera.Initialize(device, projectionInfo, DirectX::XMFLOAT3(0.0f, 0.0f, 2.0f));
+
+	camera.MoveForward(10);
+
 }
 
 bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11VertexShader*& vShader,
