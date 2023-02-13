@@ -8,7 +8,7 @@
 
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
-
+#include "Camera.h"
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11VertexShader* vShader,
 	ID3D11PixelShader* pShader, ID3D11InputLayout* inputLayout, ID3D11Buffer* vertexBuffer)
@@ -54,9 +54,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	D3D11_VIEWPORT viewport;
 	ID3D11VertexShader* vShader;
 	ID3D11PixelShader* pShader;
-	//ID3D11Buffer* vertexBuffer;
+
 	InputLayout inputLayout;
 	VertexBuffer vertexBuffer;
+	Camera camera;
 
 
 
@@ -66,7 +67,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
-	if (!SetupPipeline(device, vertexBuffer, vShader, pShader,inputLayout))
+	if (!SetupPipeline(device, vertexBuffer, vShader, pShader,inputLayout,camera))
 	{
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;

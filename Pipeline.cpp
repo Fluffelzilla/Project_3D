@@ -75,9 +75,13 @@ void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 	//TODO: ta bort hårdkodad antal verticer!
 	vertexBuffer.Initialize(device, sizeof(triangle), 3, triangle);
 }
+void CreateCamera(Camera& camera, ID3D11Device* device)
+{
+	//camera.Initialize(device )
+}
 
 bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11VertexShader*& vShader,
-	ID3D11PixelShader*& pShader, InputLayout &inputLayout)
+	ID3D11PixelShader*& pShader, InputLayout &inputLayout, Camera& camera)
 {
 	std::string vShaderByteCode;
 	if (!LoadShaders(device, vShader, pShader, vShaderByteCode))
@@ -89,6 +93,8 @@ bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11Verte
 	CreateInputLayout(device, inputLayout, vShaderByteCode);
 
 	CreateVertexBuffer(device, vertexBuffer);
+
+	CreateCamera(camera,device);
 
 	return true;
 }
