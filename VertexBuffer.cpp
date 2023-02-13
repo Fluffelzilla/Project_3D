@@ -20,7 +20,7 @@ void VertexBuffer::Initialize(ID3D11Device* device, UINT sizeOfVertex, UINT nrOf
 {
 
 	D3D11_BUFFER_DESC bufferDesc;
-	bufferDesc.ByteWidth = nrOfVerticesInBuffer*sizeOfVertex;
+	bufferDesc.ByteWidth = sizeOfVertex;
 	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE; // kolla upp om det ska vara default istället
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
@@ -32,7 +32,7 @@ void VertexBuffer::Initialize(ID3D11Device* device, UINT sizeOfVertex, UINT nrOf
 	data.SysMemPitch = 0;
 	data.SysMemSlicePitch = 0;
 
-	device->CreateBuffer(&bufferDesc, &data, &buffer);
+	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &buffer);
 }
 
 UINT VertexBuffer::GetNrOfVertices() const

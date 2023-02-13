@@ -4,7 +4,7 @@
 #include <d3d11.h>
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
-#include "Camera.h"
+//#include "Camera.h"
 
 struct SimpleVertex
 {
@@ -21,4 +21,4 @@ struct SimpleVertex
 	}
 };
 
-bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11VertexShader*& vShader, ID3D11PixelShader*& pShader, InputLayout& inputLayout,Camera& camera);
+bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11VertexShader*& vShader, ID3D11PixelShader*& pShader, InputLayout& inputLayout);

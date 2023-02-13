@@ -2,7 +2,7 @@
 
 ConstantBuffer::ConstantBuffer(ID3D11Device* device, size_t byteSize, void* initialData)
 {
-	bufferSize = byteSize;
+	//bufferSize = byteSize;
 	Initialize(device, byteSize, initialData);
 }
 
@@ -30,7 +30,7 @@ void ConstantBuffer::Initialize(ID3D11Device* device, size_t byteSize, void* ini
 	data.SysMemPitch = 0;
 	data.SysMemSlicePitch = 0;
 
-	device->CreateBuffer(&bufferDesc, &data, &buffer);
+	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &buffer);
 }
 
 size_t ConstantBuffer::GetSize() const

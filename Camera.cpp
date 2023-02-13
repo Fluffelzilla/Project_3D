@@ -13,6 +13,7 @@ void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)
 }
 
 Camera::Camera(ID3D11Device* device, const ProjectionInfo& projectionInfo, const DirectX::XMFLOAT3& initialPosition)
+	:cameraBuffer(device, sizeof(MatrixInfo), &matrixInfo)
 {
 	Initialize(device, projectionInfo, initialPosition);
 }
@@ -38,8 +39,9 @@ void Camera::Initialize(ID3D11Device* device, const ProjectionInfo& projectionIn
 	matrixInfo.cPosition = position;
 	matrixInfo.world = DirectX::XMMatrixMultiply(translation, rotationY);
 
-
-	cameraBuffer.Initialize(device, cameraBuffer.GetSize());
+	
+	//cameraBuffer = ConstantBuffer(device, sizeof(MatrixInfo), nullptr);
+	//cameraBuffer.Initialize(device, cameraBuffer.GetSize());
 }
 
 void Camera::MoveForward(float amount)

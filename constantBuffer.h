@@ -9,7 +9,7 @@ private:
 	size_t bufferSize = 0;
 
 public:
-	ConstantBuffer() = default;
+	//ConstantBuffer() = default;
 	ConstantBuffer(ID3D11Device* device, size_t byteSize, void* initialData = nullptr);
 	~ConstantBuffer();
 	ConstantBuffer(const ConstantBuffer& other) = delete;
