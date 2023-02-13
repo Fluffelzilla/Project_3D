@@ -164,6 +164,7 @@
     <ClCompile Include="SpotLightCollection.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="SubMesh.cpp" />
+    <ClCompile Include="TimeHandler.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -191,6 +192,7 @@
     <ClInclude Include="SpotLightCollection.h" />
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="SubMesh.h" />
+    <ClInclude Include="TimeHandler.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

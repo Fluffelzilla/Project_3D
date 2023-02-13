@@ -6,6 +6,8 @@
 #include "D3D11_imp.h"
 #include "Pipeline.h"
 
+#include "TimeHandler.h"
+
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
 #include "Camera.h"
@@ -75,6 +77,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
+	EngineUtils::TimeHandler* clock = EngineUtils::TimeHandler::instance();
+	float frameRate = 60.0f;
+	float elapsedTime = 0.0f;
+	int frames = 0;
+
 	MSG msg = { };
 
 	while (msg.message != WM_QUIT)
@@ -84,11 +91,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		clock->tick();
+		clock->reset();
+		elapsedTime += clock->deltaTime();
+		frames++;
+		if (elapsedTime >= 0.01f)
+		{
+			camera.UpdateInternalConstantBuffer(immediateContext);
+			Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer());
+			swapChain->Present(0, 0);
+			elapsedTime = 0.0f;
+			frames = 0;
+		}
 
-		Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(),camera.GetConstantBuffer());
-		swapChain->Present(0, 0);
+
 	}
 
+	EngineUtils::TimeHandler::release();
 	vertexBuffer.~VertexBuffer();
 	inputLayout.~InputLayout();
 	pShader->Release();
