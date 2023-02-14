@@ -84,8 +84,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	projectionInfo.farZ = 1000.0f;
 	projectionInfo.nearZ = 0.1f;
 
-	Camera camera(device, projectionInfo);
-	camera.UpdateInternalConstantBuffer(immediateContext);
+	Camera camera(device, projectionInfo, DirectX::XMFLOAT3(0.0f,0.0f,-2.0f));
 
 	EngineUtils::TimeHandler* clock = EngineUtils::TimeHandler::instance();
 	float frameRate = 60.0f;
@@ -101,14 +100,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer());
-		swapChain->Present(0, 0);
+
 		clock->tick();
 		clock->reset();
 		elapsedTime += clock->deltaTime();
 		frames++;
 		if (elapsedTime >= 0.01f)
 		{
+			camera.UpdateInternalConstantBuffer(immediateContext);
+			Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer());
+			swapChain->Present(0, 0);
 			elapsedTime = 0.0f;
 			frames = 0;
 		}
@@ -117,8 +118,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	EngineUtils::TimeHandler::release();
-	vertexBuffer.~VertexBuffer();
-	inputLayout.~InputLayout();
 	pShader->Release();
 	vShader->Release();
 	dsView->Release();
