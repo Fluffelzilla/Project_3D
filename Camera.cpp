@@ -5,6 +5,7 @@ void Camera::MoveInDirection(float amount, const DirectX::XMFLOAT3& direction)
 	position.x += direction.x * amount;
 	position.y += direction.y * amount;
 	position.z += direction.z * amount;
+	matrixInfo.cPosition = position;
 }
 
 void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)

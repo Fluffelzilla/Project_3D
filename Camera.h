@@ -26,7 +26,7 @@ struct MatrixInfo
 class Camera
 {
 private:
-	DirectX::XMFLOAT3 position = { 0.0f, 0.0f, -2.0f };
+	DirectX::XMFLOAT3 position = { 0.0f, 0.0f, 0.0f };
 	DirectX::XMFLOAT3 forward = { 0.0f, 0.0f, 1.0f };
 	DirectX::XMFLOAT3 right = { 1.0f, 0.0f, 0.0f };
 	DirectX::XMFLOAT3 up = { 0.0f, 1.0f, 0.0f };
