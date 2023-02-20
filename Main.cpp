@@ -34,6 +34,54 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	immediateContext->Draw(3, 0);
 }
 
+void MoveCamera(Camera& camera, bool& moved)
+{
+	int w = 119;
+	int a = 97;
+	int s = 115;
+	int d = 100;
+
+	float amount = 0.2f;
+
+	if ((GetKeyState(a) & 0x8000 || GetKeyState(0x41) & 0x8000) && moved == false)
+	{
+		moved = true;
+		camera.MoveRight(-amount);
+	}
+
+	else if ((GetKeyState(d) & 0x8000 || GetKeyState(0x44) & 0x8000) && moved == false)
+	{
+		moved = true;
+		camera.MoveRight(amount);
+	}
+
+	if ((GetKeyState(w) & 0x8000 || GetKeyState(0x57) & 0x8000) && moved == false)
+	{
+		moved = true;
+		camera.MoveUp(amount);
+	}
+
+	else if ((GetKeyState(s) & 0x8000 || GetKeyState(0x53) & 0x8000) && moved == false)
+	{
+		moved = true;
+		camera.MoveUp(-amount);
+	}
+
+	if ((GetKeyState(VK_UP) & 0x8000 || GetKeyState(0x26) & 0x8000) && moved == false)
+	{
+		moved = true;
+		camera.MoveForward(amount);
+	}
+
+	else if ((GetKeyState(VK_DOWN) & 0x8000 || GetKeyState(0x28) & 0x8000) && moved == false)
+	{
+		moved = true;
+		camera.MoveUp(-amount);
+	}
+
+
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -85,12 +133,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	projectionInfo.nearZ = 0.1f;
 
 	Camera camera(device, projectionInfo, DirectX::XMFLOAT3(0.0f,0.0f,-2.0f));
-
+	bool movedCamera = false;
 	EngineUtils::TimeHandler* clock = EngineUtils::TimeHandler::instance();
 	float frameRate = 60.0f;
 	float elapsedTime = 0.0f;
 	int frames = 0;
-	bool test = false;
 
 	MSG msg = { };
 
@@ -108,24 +155,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		frames++;
 		if (elapsedTime >= 0.01f)
 		{
-			if ((GetKeyState(97) & 0x8000 || GetKeyState(0x41) & 0x8000) && test == false)
+			if(movedCamera==false)
 			{
-				test = true;
-				camera.MoveRight(-1.0f);
+				MoveCamera(camera, movedCamera);
 			}
-			//else if (test==true)
-			//{
-			//	test = false;
-			//}
-			camera.MoveRight(-1.0f);
 
 			camera.UpdateInternalConstantBuffer(immediateContext);
 			Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer());
 			swapChain->Present(0, 0);
 			elapsedTime = 0.0f;
 			frames = 0;
+			if (movedCamera==true)
+			{
+				movedCamera = false;
+			}
 		}
-
 
 	}
 
