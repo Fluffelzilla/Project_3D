@@ -20,7 +20,6 @@ struct MatrixInfo
 	DirectX::XMMATRIX world;
 	DirectX::XMMATRIX viewPro;
 	DirectX::XMFLOAT3 cPosition;
-	float pad;
 };
 
 class Camera

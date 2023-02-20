@@ -5,7 +5,6 @@ void Camera::MoveInDirection(float amount, const DirectX::XMFLOAT3& direction)
 	position.x += direction.x * amount;
 	position.y += direction.y * amount;
 	position.z += direction.z * amount;
-	matrixInfo.cPosition = position;
 }
 
 void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)
@@ -126,6 +125,15 @@ const DirectX::XMFLOAT3& Camera::GetUp() const
 void Camera::UpdateInternalConstantBuffer(ID3D11DeviceContext* context)
 {
 	
+	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&position), DirectX::XMLoadFloat3(&forward), DirectX::XMLoadFloat3(&up));
+	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(projInfo.fovAngleY, projInfo.aspectRatio, projInfo.nearZ, projInfo.farZ);
+	DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(0, 0, 0); // this is object world space not camera!!!!
+	DirectX::XMMATRIX rotationY = DirectX::XMMatrixRotationY(0);//this dont belonge here :´(
+
+	matrixInfo.viewPro = DirectX::XMMatrixMultiplyTranspose(view, projection);
+	matrixInfo.cPosition = position;
+	matrixInfo.world = DirectX::XMMatrixMultiply(translation, rotationY);
+
 	MatrixInfo* dataptr;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));

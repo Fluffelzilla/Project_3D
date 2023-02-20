@@ -16,7 +16,6 @@ cbuffer camerabuffer
 	matrix world;
 	matrix viewPro;
 	float3 cPosition;
-	float pad;
 };
 
 VertexShaderOutput main(VertexShaderInput input)

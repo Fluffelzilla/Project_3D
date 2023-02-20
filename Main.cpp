@@ -108,17 +108,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		frames++;
 		if (elapsedTime >= 0.01f)
 		{
-			//if ((GetKeyState(97) & 0x8000 || GetKeyState(0x41) & 0x8000) && test == false)
-			//{
-			//	test = true;
-			//	camera.MoveRight(-1.0f);
-			//}
+			if ((GetKeyState(97) & 0x8000 || GetKeyState(0x41) & 0x8000) && test == false)
+			{
+				test = true;
+				camera.MoveRight(-1.0f);
+			}
 			//else if (test==true)
 			//{
 			//	test = false;
 			//}
-			//camera.MoveRight(-1.0f);
-			camera.MoveRight(-2.0f);
+			camera.MoveRight(-1.0f);
+
 			camera.UpdateInternalConstantBuffer(immediateContext);
 			Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer());
 			swapChain->Present(0, 0);
