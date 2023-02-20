@@ -133,6 +133,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	projectionInfo.nearZ = 0.1f;
 
 	Camera camera(device, projectionInfo, DirectX::XMFLOAT3(0.0f,0.0f,-2.0f));
+
 	bool movedCamera = false;
 	EngineUtils::TimeHandler* clock = EngineUtils::TimeHandler::instance();
 	float frameRate = 60.0f;
