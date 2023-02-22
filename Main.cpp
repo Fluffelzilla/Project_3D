@@ -55,17 +55,17 @@ void MoveCamera(Camera& camera)
 
 	if ((GetKeyState(w) & 0x8000 || GetKeyState(0x57) & 0x8000))
 	{
-		camera.MoveUp(amount);
+		camera.MoveForward(amount);
 	}
 
 	else if ((GetKeyState(s) & 0x8000 || GetKeyState(0x53) & 0x8000))
 	{
-		camera.MoveUp(-amount);
+		camera.MoveForward(-amount);
 	}
 
 	if ((GetKeyState(VK_UP) & 0x8000 || GetKeyState(0x26) & 0x8000) )
 	{
-		camera.MoveForward(amount);
+		camera.MoveUp(amount);
 	}
 
 	else if ((GetKeyState(VK_DOWN) & 0x8000 || GetKeyState(0x28) & 0x8000) )
