@@ -39,15 +39,6 @@ void Camera::Initialize(ID3D11Device* device, const ProjectionInfo& projectionIn
 	projInfo.fovAngleY = projectionInfo.fovAngleY;
 	projInfo.nearZ = projectionInfo.nearZ;
 
-	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&position), DirectX::XMLoadFloat3(&forward), DirectX::XMLoadFloat3(&up));
-	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(projInfo.fovAngleY, projInfo.aspectRatio, projInfo.nearZ, projInfo.farZ);
-	DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(0, 0, 0); // this is object world space not camera!!!!
-	DirectX::XMMATRIX rotationY = DirectX::XMMatrixRotationY(0);//this dont belonge here :´(
-
-	matrixInfo.viewPro = DirectX::XMMatrixMultiplyTranspose(view, projection);
-	matrixInfo.cPosition = position;
-	matrixInfo.world = DirectX::XMMatrixMultiply(translation, rotationY);
-
 	InitializeBuffer(device);
 }
 
