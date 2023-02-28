@@ -9,7 +9,13 @@ void Camera::MoveInDirection(float amount, const DirectX::XMFLOAT3& direction)
 
 void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)
 {
-	DirectX::XMMatrixRotationAxis(DirectX::XMLoadFloat3(&axis), amount);
+	DirectX::XMMATRIX temp;
+	DirectX::XMVECTOR temp2;
+	temp=DirectX::XMMatrixRotationNormal(DirectX::XMLoadFloat3(&axis), amount);
+	temp2=DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&forward), temp);
+	forward.x = temp2.m128_f32[0];
+	forward.y = temp2.m128_f32[1];
+	forward.z = temp2.m128_f32[2];
 }
 
 Camera::Camera(ID3D11Device* device, const ProjectionInfo& projectionInfo, const DirectX::XMFLOAT3& initialPosition)
@@ -78,19 +84,16 @@ void Camera::MoveUp(float amount)
 void Camera::RotateForward(float amount)
 {
 	RotateAroundAxis(amount, forward);
-	//DirectX::XMMatrixRotationZ(amount);
 }
 
 void Camera::RotateRight(float amount)
 {
-	RotateAroundAxis(amount, right);
-	//DirectX::XMMatrixRotationY(amount);
+	RotateAroundAxis(amount, up);
 }
 
 void Camera::RotateUp(float amount)
 {
-	RotateAroundAxis(amount, up);
-	//DirectX::XMMatrixRotationX(amount);
+	RotateAroundAxis(amount, right);
 }
 
 const DirectX::XMFLOAT3& Camera::GetPosition() const
