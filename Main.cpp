@@ -63,15 +63,34 @@ void MoveCamera(Camera& camera)
 		camera.MoveForward(-amount);
 	}
 
-	if ((GetKeyState(VK_LBUTTON) & 0x8000 ) )
-	{
-		camera.RotateRight(amount/10);
-		//camera.MoveUp(amount);
-	}
-
-	else if ((GetKeyState(VK_RBUTTON) & 0x8000 ) )
+	if ((GetKeyState(VK_CONTROL) & 0x8000))
 	{
 		camera.MoveUp(-amount);
+	}
+
+	else if ((GetKeyState(VK_SPACE) & 0x8000 ) )
+	{
+		camera.MoveUp(amount);
+	}
+
+	if ((GetKeyState(VK_RIGHT) & 0x8000))
+	{
+		camera.RotateRight(amount / 10);
+	}
+
+	else if ((GetKeyState(VK_LEFT) & 0x8000))
+	{
+		camera.RotateRight(-amount / 10);
+	}
+
+	if ((GetKeyState(VK_UP) & 0x8000))
+	{
+		camera.RotateUp(amount / 10);
+	}
+
+	else if ((GetKeyState(VK_DOWN) & 0x8000))
+	{
+		camera.RotateUp(-amount / 10);
 	}
 }
 

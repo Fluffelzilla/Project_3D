@@ -9,13 +9,21 @@ void Camera::MoveInDirection(float amount, const DirectX::XMFLOAT3& direction)
 
 void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)
 {
-	DirectX::XMMATRIX temp;
-	DirectX::XMVECTOR temp2;
-	temp=DirectX::XMMatrixRotationNormal(DirectX::XMLoadFloat3(&axis), amount);
-	temp2=DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&forward), temp);
-	forward.x = temp2.m128_f32[0];
-	forward.y = temp2.m128_f32[1];
-	forward.z = temp2.m128_f32[2];
+	DirectX::XMMATRIX RotatinMatrix;
+	DirectX::XMVECTOR rotationVector;
+	RotatinMatrix=DirectX::XMMatrixRotationNormal(DirectX::XMLoadFloat3(&axis), amount);
+	rotationVector=DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&forward), RotatinMatrix);
+	forward.x = rotationVector.m128_f32[0];
+	forward.y = rotationVector.m128_f32[1];
+	forward.z = rotationVector.m128_f32[2];
+	rotationVector = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&right), RotatinMatrix);
+	right.x = rotationVector.m128_f32[0];
+	right.y = rotationVector.m128_f32[1];
+	right.z = rotationVector.m128_f32[2];
+	rotationVector = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&up), RotatinMatrix);
+	up.x = rotationVector.m128_f32[0];
+	up.y = rotationVector.m128_f32[1];
+	up.z = rotationVector.m128_f32[2];
 }
 
 Camera::Camera(ID3D11Device* device, const ProjectionInfo& projectionInfo, const DirectX::XMFLOAT3& initialPosition)
