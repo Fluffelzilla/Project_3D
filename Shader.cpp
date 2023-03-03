@@ -4,11 +4,11 @@
 
 Shader::~Shader()
 {
-	if (shaderByteCode)
-	{
-		delete(shaderByteCode);
-		shaderByteCode = 0;
-	}
+	//if (shaderByteCode)
+	//{
+	//	delete(shaderByteCode);
+	//	shaderByteCode = 0;
+	//}
 
 	if (shader.vertex)
 	{
@@ -57,35 +57,43 @@ Shader::Shader(ID3D11Device* device, ShaderType shaderType, const char* csoPath)
 
 void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const void* dataPtr, size_t dataSize)
 {
+	HRESULT hr;
 	if (shaderType == ShaderType::VERTEX_SHADER)
 	{
-		device->CreateVertexShader(dataPtr, dataSize, nullptr, &shader.vertex);
+		type = ShaderType::VERTEX_SHADER;
+		hr = device->CreateVertexShader(dataPtr, dataSize, nullptr, &shader.vertex);
 	}
 
 	if (shaderType == ShaderType::HULL_SHADER)
 	{
-		device->CreateHullShader(dataPtr, dataSize, nullptr, &shader.hull);
+		type = ShaderType::HULL_SHADER;
+		hr = device->CreateHullShader(dataPtr, dataSize, nullptr, &shader.hull);
 	}
 
 	if (shaderType == ShaderType::DOMAIN_SHADER)
 	{
-		device->CreateDomainShader(dataPtr, dataSize, nullptr, &shader.domain);
+		type = ShaderType::DOMAIN_SHADER;
+		hr = device->CreateDomainShader(dataPtr, dataSize, nullptr, &shader.domain);
 	}
 
 	if (shaderType == ShaderType::GEOMETRY_SHADER)
 	{
-		device->CreateGeometryShader(dataPtr, dataSize, nullptr, &shader.geometry);
+		type = ShaderType::GEOMETRY_SHADER;
+		hr = device->CreateGeometryShader(dataPtr, dataSize, nullptr, &shader.geometry);
 	}
 
 	if (shaderType == ShaderType::PIXEL_SHADER)
 	{
-		device->CreatePixelShader(dataPtr, dataSize, nullptr, &shader.pixel);
+		type = ShaderType::PIXEL_SHADER;
+		hr = device->CreatePixelShader(dataPtr, dataSize, nullptr, &shader.pixel);
 	}
 
 	if (shaderType == ShaderType::COMPUTE_SHADER)
 	{
-		device->CreateComputeShader(dataPtr, dataSize, nullptr, &shader.compute);
+		type = ShaderType::COMPUTE_SHADER;
+		hr=device->CreateComputeShader(dataPtr, dataSize, nullptr, &shader.compute);
 	}
+
 }
 
 void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const char* csoPath)
@@ -106,6 +114,7 @@ void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const char*
 		std::istreambuf_iterator<char>());
 
 	shaderByteCode = &shaderData;
+	size_t length = shaderByteCode->length();
 	Initialize(device, shaderType, shaderData.c_str(), shaderData.length());
 
 	shaderData.clear();
@@ -124,10 +133,33 @@ size_t Shader::GetShaderByteSize() const
 
 void Shader::BindShader(ID3D11DeviceContext* context) const
 {
-	context->PSSetShader(shader.pixel, nullptr, 0);
-	context->VSSetShader(shader.vertex, nullptr, 0);
-	context->HSSetShader(shader.hull, nullptr, 0);
-	context->DSSetShader(shader.domain, nullptr, 0);
-	context->GSSetShader(shader.geometry, nullptr, 0);
-	context->CSSetShader(shader.compute, nullptr, 0);
+	if (type == ShaderType::VERTEX_SHADER)
+	{
+		context->VSSetShader(shader.vertex, nullptr, 0);
+	}
+
+	if (type == ShaderType::HULL_SHADER)
+	{
+		context->HSSetShader(shader.hull, nullptr, 0);
+	}
+
+	if (type == ShaderType::DOMAIN_SHADER)
+	{
+		context->DSSetShader(shader.domain, nullptr, 0);
+	}
+
+	if (type == ShaderType::GEOMETRY_SHADER)
+	{
+		context->GSSetShader(shader.geometry, nullptr, 0);
+	}
+
+	if (type == ShaderType::PIXEL_SHADER)
+	{
+		context->PSSetShader(shader.pixel, nullptr, 0);
+	}
+
+	if (type==ShaderType::COMPUTE_SHADER)
+	{
+		context->CSSetShader(shader.compute, nullptr, 0);
+	}
 }

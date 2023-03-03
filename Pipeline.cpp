@@ -4,62 +4,63 @@
 #include <string>
 #include <iostream>
 
-bool LoadShaders(ID3D11Device* device, ID3D11VertexShader*& vShader, ID3D11PixelShader*& pShader, std::string& vShaderByteCode)
+void LoadShaders(ID3D11Device* device, Shader* vShader, Shader* pShader)
 {
-	std::string shaderData;
-	std::ifstream reader;
-	reader.open("VertexShader.cso", std::ios::binary | std::ios::ate);
+	vShader->Initialize(device, ShaderType::VERTEX_SHADER, "VertexShader.cso");
+	pShader->Initialize(device, ShaderType::PIXEL_SHADER, "PixelShader.cso");
+	//std::string shaderData;
+	//std::ifstream reader;
+	/*reader.open("VertexShader.cso", std::ios::binary | std::ios::ate);
 	if (!reader.is_open())
 	{
 		std::cerr << "Could not open VS file!" << std::endl;
 		return false;
-	}
+	}*/
 
-	reader.seekg(0, std::ios::end);
-	shaderData.reserve(static_cast<unsigned int>(reader.tellg()));
-	reader.seekg(0, std::ios::beg);
+	//reader.seekg(0, std::ios::end);
+	//shaderData.reserve(static_cast<unsigned int>(reader.tellg()));
+	//reader.seekg(0, std::ios::beg);
 
-	shaderData.assign((std::istreambuf_iterator<char>(reader)),
-		std::istreambuf_iterator<char>());
+	//shaderData.assign((std::istreambuf_iterator<char>(reader)),
+	//	std::istreambuf_iterator<char>());
 
-	if (FAILED(device->CreateVertexShader(shaderData.c_str(), shaderData.length(), nullptr, &vShader)))
-	{
-		std::cerr << "Failed to create vertex shader!" << std::endl;
-		return false;
-	}
+	//if (FAILED(device->CreateVertexShader(shaderData.c_str(), shaderData.length(), nullptr, &vShader)))
+	//{
+	//	std::cerr << "Failed to create vertex shader!" << std::endl;
+	//	return false;
+	//}
 	
-	vShaderByteCode = shaderData;
-	shaderData.clear();
-	reader.close();
-	//
-	reader.open("PixelShader.cso", std::ios::binary | std::ios::ate);
-	if (!reader.is_open())
-	{
-		std::cerr << "Could not open PS file!" << std::endl;
-		return false;
-	}
+	//vShaderByteCode = shaderData;
+	//shaderData.clear();
+	//reader.close();
+	////
+	//reader.open("PixelShader.cso", std::ios::binary | std::ios::ate);
+	//if (!reader.is_open())
+	//{
+	//	std::cerr << "Could not open PS file!" << std::endl;
+	//	return false;
+	//}
 
-	reader.seekg(0, std::ios::end);
-	shaderData.reserve(static_cast<unsigned int>(reader.tellg()));
-	reader.seekg(0, std::ios::beg);
+	//reader.seekg(0, std::ios::end);
+	//shaderData.reserve(static_cast<unsigned int>(reader.tellg()));
+	//reader.seekg(0, std::ios::beg);
 
-	shaderData.assign((std::istreambuf_iterator<char>(reader)),
-		std::istreambuf_iterator<char>());
+	//shaderData.assign((std::istreambuf_iterator<char>(reader)),
+	//	std::istreambuf_iterator<char>());
 
-	if (FAILED(device->CreatePixelShader(shaderData.c_str(), shaderData.length(), nullptr, &pShader)))
-	{
-		std::cerr << "Failed to create pixel shader!" << std::endl;
-		return false;
-	}
+	//if (FAILED(device->CreatePixelShader(shaderData.c_str(), shaderData.length(), nullptr, &pShader)))
+	//{
+	//	std::cerr << "Failed to create pixel shader!" << std::endl;
+	//	return false;
+	//}
 
-	return true;
 }
 
-void CreateInputLayout(ID3D11Device* device, InputLayout& inputLayout, const std::string& vShaderByteCode)
+void CreateInputLayout(ID3D11Device* device, InputLayout& inputLayout, Shader* vShader)
 {
-	inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
-	inputLayout.AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
-	inputLayout.FinalizeInputLayout(device, vShaderByteCode.c_str(), vShaderByteCode.size());
+	//inputLayout.AddInputElement("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	//inputLayout.AddInputElement("COLOUR", DXGI_FORMAT_R32G32B32_FLOAT);
+	inputLayout.FinalizeInputLayout(device, vShader->GetShaderByteData(), vShader->GetShaderByteSize());
 }
 
 void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
@@ -76,17 +77,16 @@ void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 	vertexBuffer.Initialize(device, sizeof(triangle), 3, triangle);
 }
 
-bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, ID3D11VertexShader*& vShader,
-	ID3D11PixelShader*& pShader, InputLayout &inputLayout)
+bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, Shader* vShader,
+	Shader* pShader, InputLayout &inputLayout)
 {
-	std::string vShaderByteCode;
-	if (!LoadShaders(device, vShader, pShader, vShaderByteCode))
-	{
-		std::cerr << "Error loading shaders!" << std::endl;
-		return false;
-	}
+	
 
-	CreateInputLayout(device, inputLayout, vShaderByteCode);
+	LoadShaders(device, vShader, pShader);
+	//void* vp = vShader->GetShaderByteData();
+	//std::string* vShaderByteCode = static_cast<std::string*>(vShader->GetShaderByteData());
+
+	CreateInputLayout(device, inputLayout, vShader);
 
 	CreateVertexBuffer(device, vertexBuffer);
 

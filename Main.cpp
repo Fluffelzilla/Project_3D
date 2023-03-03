@@ -11,9 +11,10 @@
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
 #include "Camera.h"
+#include "shader.h"
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
-	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11VertexShader* vShader,
-	ID3D11PixelShader* pShader, ID3D11InputLayout* inputLayout, ID3D11Buffer* vertexBuffer, ID3D11Buffer* cameraBuffer)
+	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11InputLayout* inputLayout,
+	ID3D11Buffer* vertexBuffer, ID3D11Buffer* cameraBuffer,Shader& vShader,Shader& pShader)
 {
 	float clearColour[4] = { 0, 0, 0, 0 };
 	immediateContext->ClearRenderTargetView(rtv, clearColour);
@@ -26,9 +27,11 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	immediateContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	immediateContext->IASetInputLayout(inputLayout);
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	immediateContext->VSSetShader(vShader, nullptr, 0);
+	vShader.BindShader(immediateContext);
+	//immediateContext->VSSetShader(vShader, nullptr, 0);
 	immediateContext->RSSetViewports(1, &viewport);
-	immediateContext->PSSetShader(pShader, nullptr, 0);
+	pShader.BindShader(immediateContext);
+	//immediateContext->PSSetShader(pShader, nullptr, 0);
 	immediateContext->OMSetRenderTargets(1, &rtv, dsView);
 
 	immediateContext->Draw(3, 0);
@@ -116,15 +119,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	ID3D11Texture2D* dsTexture;
 	ID3D11DepthStencilView* dsView;
 	D3D11_VIEWPORT viewport;
-	ID3D11VertexShader* vShader;
-	ID3D11PixelShader* pShader;
+	//ID3D11VertexShader* vShader;
+	//ID3D11PixelShader* pShader;
 
 	InputLayout inputLayout;
 	VertexBuffer vertexBuffer;
-
-
-
-
+	Shader vertexShader;
+	Shader pixelShader;
 
 	if (!SetupD3D11(WIDTH, HEIGHT, window, device, immediateContext, swapChain, rtv, dsTexture, dsView, viewport))
 	{
@@ -132,7 +133,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
-	if (!SetupPipeline(device, vertexBuffer, vShader, pShader,inputLayout))
+	if (!SetupPipeline(device, vertexBuffer, &vertexShader, &pixelShader, inputLayout))
 	{
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;
@@ -169,7 +170,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		{
 			MoveCamera(camera);
 			camera.UpdateInternalConstantBuffer(immediateContext);
-			Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer());
+
+			Render(immediateContext, rtv, dsView, viewport, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer(),vertexShader,pixelShader);
 			swapChain->Present(0, 0);
 			elapsedTime = 0.0f;
 			frames = 0;
@@ -179,8 +181,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	EngineUtils::TimeHandler::release();
-	pShader->Release();
-	vShader->Release();
+
 	dsView->Release();
 	dsTexture->Release();
 	rtv->Release();
