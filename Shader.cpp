@@ -113,8 +113,8 @@ void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const char*
 	shaderData.assign((std::istreambuf_iterator<char>(reader)),
 		std::istreambuf_iterator<char>());
 
-	shaderByteCode = &shaderData;
-	size_t length = shaderByteCode->length();
+	shaderByteCode = new std::string(shaderData);
+	//size_t length = shaderByteCode->length(); 
 	Initialize(device, shaderType, shaderData.c_str(), shaderData.length());
 
 	shaderData.clear();
@@ -123,7 +123,7 @@ void Shader::Initialize(ID3D11Device* device, ShaderType shaderType, const char*
 
 const void* Shader::GetShaderByteData() const
 {
-	return shaderByteCode;
+	return shaderByteCode->c_str();
 }
 
 size_t Shader::GetShaderByteSize() const
