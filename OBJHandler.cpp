@@ -1,7 +1,8 @@
 #include "OBJHandler.h"
 
-OBJHandler::OBJHandler()
+OBJHandler::OBJHandler(std::string filePath)
 {
+    fileName = filePath;
 }
 
 bool OBJHandler::LoadFile()
