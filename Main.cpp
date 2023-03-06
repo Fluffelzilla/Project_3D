@@ -6,9 +6,15 @@
 #include "D3D11_imp.h"
 #include "Pipeline.h"
 
+#include "TimeHandler.h"
+
+#include "InputLayout.h"
+#include "VertexBuffer.h" 
+#include "Camera.h"
+#include "shader.h"
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
-	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11VertexShader* vShader,
-	ID3D11PixelShader* pShader, ID3D11InputLayout* inputLayout, ID3D11Buffer* vertexBuffer)
+	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11InputLayout* inputLayout,
+	ID3D11Buffer* vertexBuffer, ID3D11Buffer* cameraBuffer,Shader& vShader,Shader& pShader)
 {
 	float clearColour[4] = { 0, 0, 0, 0 };
 	immediateContext->ClearRenderTargetView(rtv, clearColour);
@@ -16,15 +22,79 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 
 	UINT stride = sizeof(SimpleVertex);
 	UINT offset = 0;
+	immediateContext->VSSetConstantBuffers(0, 1, &cameraBuffer);
+	//immediateContext->PSSetConstantBuffers(1, 1, &cameraBuffer);
 	immediateContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	immediateContext->IASetInputLayout(inputLayout);
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	immediateContext->VSSetShader(vShader, nullptr, 0);
+	vShader.BindShader(immediateContext);
+	//immediateContext->VSSetShader(vShader, nullptr, 0);
 	immediateContext->RSSetViewports(1, &viewport);
-	immediateContext->PSSetShader(pShader, nullptr, 0);
+	pShader.BindShader(immediateContext);
+	//immediateContext->PSSetShader(pShader, nullptr, 0);
 	immediateContext->OMSetRenderTargets(1, &rtv, dsView);
 
 	immediateContext->Draw(3, 0);
+}
+
+void MoveCamera(Camera& camera)
+{
+	int w = 119;
+	int a = 97;
+	int s = 115;
+	int d = 100;
+
+	float amount = 0.2f;
+
+	if ((GetKeyState(a) & 0x8000 || GetKeyState(0x41) & 0x8000))
+	{
+		camera.MoveRight(-amount);
+	}
+
+	else if ((GetKeyState(d) & 0x8000 || GetKeyState(0x44) & 0x8000))
+	{
+		camera.MoveRight(amount);
+	}
+
+	if ((GetKeyState(w) & 0x8000 || GetKeyState(0x57) & 0x8000))
+	{
+		camera.MoveForward(amount);
+	}
+
+	else if ((GetKeyState(s) & 0x8000 || GetKeyState(0x53) & 0x8000))
+	{
+		camera.MoveForward(-amount);
+	}
+
+	if ((GetKeyState(VK_CONTROL) & 0x8000))
+	{
+		camera.MoveUp(-amount);
+	}
+
+	else if ((GetKeyState(VK_SPACE) & 0x8000 ) )
+	{
+		camera.MoveUp(amount);
+	}
+
+	if ((GetKeyState(VK_RIGHT) & 0x8000))
+	{
+		camera.RotateRight(amount / 10);
+	}
+
+	else if ((GetKeyState(VK_LEFT) & 0x8000))
+	{
+		camera.RotateRight(-amount / 10);
+	}
+
+	if ((GetKeyState(VK_UP) & 0x8000))
+	{
+		camera.RotateUp(amount / 10);
+	}
+
+	else if ((GetKeyState(VK_DOWN) & 0x8000))
+	{
+		camera.RotateUp(-amount / 10);
+	}
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -49,10 +119,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	ID3D11Texture2D* dsTexture;
 	ID3D11DepthStencilView* dsView;
 	D3D11_VIEWPORT viewport;
-	ID3D11VertexShader* vShader;
-	ID3D11PixelShader* pShader;
-	ID3D11InputLayout* inputLayout;
-	ID3D11Buffer* vertexBuffer;
+	//ID3D11VertexShader* vShader;
+	//ID3D11PixelShader* pShader;
+
+	InputLayout inputLayout;
+	VertexBuffer vertexBuffer;
+	Shader vertexShader;
+	Shader pixelShader;
 
 	if (!SetupD3D11(WIDTH, HEIGHT, window, device, immediateContext, swapChain, rtv, dsTexture, dsView, viewport))
 	{
@@ -60,11 +133,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
-	if (!SetupPipeline(device, vertexBuffer, vShader, pShader, inputLayout))
+	if (!SetupPipeline(device, vertexBuffer, &vertexShader, &pixelShader, inputLayout))
 	{
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;
 	}
+
+	ProjectionInfo projectionInfo;
+	projectionInfo.aspectRatio = (float)WIDTH/(float)HEIGHT;
+	projectionInfo.fovAngleY = 0.4 * 3.14f;
+	projectionInfo.farZ = 1000.0f;
+	projectionInfo.nearZ = 0.1f;
+
+	Camera camera(device, projectionInfo, DirectX::XMFLOAT3(0.0f,0.0f,-2.0f));
+
+	EngineUtils::TimeHandler* clock = EngineUtils::TimeHandler::instance();
+	float frameRate = 60.0f;
+	float elapsedTime = 0.0f;
+	int frames = 0;
 
 	MSG msg = { };
 
@@ -76,14 +162,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 
-		Render(immediateContext, rtv, dsView, viewport, vShader, pShader, inputLayout, vertexBuffer);
-		swapChain->Present(0, 0);
+		clock->tick();
+		clock->reset();
+		elapsedTime += clock->deltaTime();
+		frames++;
+		if (elapsedTime >= 0.01f)
+		{
+			MoveCamera(camera);
+			camera.UpdateInternalConstantBuffer(immediateContext);
+
+			Render(immediateContext, rtv, dsView, viewport, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer(),vertexShader,pixelShader);
+			swapChain->Present(0, 0);
+			elapsedTime = 0.0f;
+			frames = 0;
+
+		}
+
 	}
 
-	vertexBuffer->Release();
-	inputLayout->Release();
-	pShader->Release();
-	vShader->Release();
+	EngineUtils::TimeHandler::release();
+
 	dsView->Release();
 	dsTexture->Release();
 	rtv->Release();
