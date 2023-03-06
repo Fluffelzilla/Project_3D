@@ -16,23 +16,19 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11InputLayout* inputLayout,
 	ID3D11Buffer* vertexBuffer, ID3D11Buffer* cameraBuffer,Shader& vShader,Shader& pShader)
 {
+	UINT stride = sizeof(SimpleVertex);
+	UINT offset = 0;
 	float clearColour[4] = { 0, 0, 0, 0 };
 	immediateContext->ClearRenderTargetView(rtv, clearColour);
 	immediateContext->ClearDepthStencilView(dsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
-
-	UINT stride = sizeof(SimpleVertex);
-	UINT offset = 0;
 	immediateContext->VSSetConstantBuffers(0, 1, &cameraBuffer);
-	//immediateContext->PSSetConstantBuffers(1, 1, &cameraBuffer);
 	immediateContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	immediateContext->IASetInputLayout(inputLayout);
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	vShader.BindShader(immediateContext);
-	//immediateContext->VSSetShader(vShader, nullptr, 0);
 	immediateContext->RSSetViewports(1, &viewport);
-	pShader.BindShader(immediateContext);
-	//immediateContext->PSSetShader(pShader, nullptr, 0);
 	immediateContext->OMSetRenderTargets(1, &rtv, dsView);
+	vShader.BindShader(immediateContext);
+	pShader.BindShader(immediateContext);
 
 	immediateContext->Draw(3, 0);
 }
@@ -119,9 +115,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	ID3D11Texture2D* dsTexture;
 	ID3D11DepthStencilView* dsView;
 	D3D11_VIEWPORT viewport;
-	//ID3D11VertexShader* vShader;
-	//ID3D11PixelShader* pShader;
-
 	InputLayout inputLayout;
 	VertexBuffer vertexBuffer;
 	Shader vertexShader;

@@ -27,7 +27,6 @@ void Camera::RotateAroundAxis(float amount, const DirectX::XMFLOAT3& axis)
 }
 
 Camera::Camera(ID3D11Device* device, const ProjectionInfo& projectionInfo, const DirectX::XMFLOAT3& initialPosition)
-	//:cameraBuffer(device, sizeof(MatrixInfo), &matrixInfo)
 {
 	Initialize(device, projectionInfo, initialPosition);
 }

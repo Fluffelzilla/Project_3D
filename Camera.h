@@ -2,11 +2,6 @@
 #include <d3d11_4.h>
 #include <DirectXMath.h>
 
-//#include "ConstantBuffer.h"
-
-//TODO: All rotation info i .cpp är inte sparat i någon variabel eller liknande, detta MÅSTE fixas!!!
-//kanske är fixat, måste testas!!!
-
 struct ProjectionInfo
 {
 	float fovAngleY = 0.4 * 3.14f; //field of view

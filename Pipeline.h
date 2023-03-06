@@ -1,11 +1,9 @@
 #pragma once
-
 #include <array>
 #include <d3d11.h>
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
 #include"Shader.h"
-//#include "Camera.h"
 
 struct SimpleVertex
 {
