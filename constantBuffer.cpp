@@ -2,7 +2,6 @@
 
 ConstantBuffer::ConstantBuffer(ID3D11Device* device, size_t byteSize, void* initialData)
 {
-	//bufferSize = byteSize;
 	Initialize(device, byteSize, initialData);
 }
 
