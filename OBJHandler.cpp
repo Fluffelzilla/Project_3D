@@ -13,54 +13,59 @@ void OBJHandler::initialize()
 bool OBJHandler::LoadFile(std::wstring filePath)
 {
     bool couldLoadFile = false;
-    std::wifstream fileIn(filePath.c_str());
+    std::wifstream fileIn(filePath.c_str()); //loading the file
     if (fileIn)
     {
         couldLoadFile = true;
-        std::wstring line;
-        std::vector<Position> vecPos;
-        std::vector<TextureCoordinate> vecTexcoor;
-        std::vector<Normal> vecNorm;
-        std::vector<Triangle> vecTriangles;
-        while (std::getline(fileIn,line))
+        std::wstring line; // string to place the loaded text in
+        std::vector<Position> vecPos; // a vector to store a vertex position
+        std::vector<TextureCoordinate> vecTexcoor; // vector to store texturecoordinates in
+        std::vector<Normal> vecNorm; // vector to stor nomals in
+        std::vector<Triangle> vecTriangles; // stores the combined information to a triangle
+        while (std::getline(fileIn,line)) // gets a line in the obj file
         {
-            std::wstringstream ssLine(line);
+            std::wstringstream ssLine(line); //puts line into buffer
             if (line.size()>0)
             {
-                wchar_t trash;
+                wchar_t trash; //contains unusable information, used for emtying other variable
                 std::wstring command;
-                //ssLine >> first;
-                ssLine >> command;
+                ssLine >> command; // moves first object in buffer to command, to identify its type
                 double x, y, z;
+
+                //cheks what command contains and handle the remaining content of the buffer
                 if (command==L"v")
                 {
                     ssLine >> x;
                     ssLine >> y;
                     ssLine >> z;
-                    vecPos.emplace_back(x,y,z);
+                    //  emplace_back() constructs the object in-place, potentially avoiding a copy operation. (is more work for the compiler)
+                    vecPos.emplace_back(x,y,z); // add information to vector
                 }
                 else if (command == L"vt")
                 {
                     ssLine >> x;
                     ssLine >> y;
-                    vecTexcoor.emplace_back(x, y);
+                    vecTexcoor.emplace_back(x, y); // add information to vector
                 }
                 else if (command == L"vn")
                 {
                     ssLine >> x;
                     ssLine >> y;
                     ssLine >> z;
-                    vecNorm.emplace_back(x, y, z);
+                    vecNorm.emplace_back(x, y, z); // add information to vector
                 }
+
+                // the following function creates a triangle from the vertex position, texturecoordinates and normal,
+                // also the obj file starts with vertex 1 and we are therefor changing it to vertex 0 as a list starts at 0.
                 else if (command == L"f")
                 {
                     Vertex ver[3];
                     for (int i = 0; i < 3; i++)
                     {
                         ssLine >> x;
-                        ssLine >> trash;
+                        ssLine >> trash; // trash contains "/" that is unsubable
                         ssLine >> y;
-                        ssLine >> trash;
+                        ssLine >> trash; // trash contains "/" that is unsubable
                         ssLine >> z;
                         ver[i].pos = vecPos[x - 1];
                         ver[i].tCoor = vecTexcoor[y - 1];
