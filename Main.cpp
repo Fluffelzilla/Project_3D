@@ -149,7 +149,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	MSG msg = { };
 
 	OBJHandler objhandler;
-	objhandler.LoadFile(L"objects/cube.obj");
+	objhandler.LoadFile(device,vertexBuffer,L"objects/cube.obj");
 
 	while (msg.message != WM_QUIT)
 	{

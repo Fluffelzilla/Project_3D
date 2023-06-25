@@ -10,7 +10,7 @@ void OBJHandler::initialize()
     
 }
 
-bool OBJHandler::LoadFile(std::wstring filePath)
+void OBJHandler::LoadFile(ID3D11Device* device, VertexBuffer& vertexBuffer,std::wstring filePath)
 {
     bool couldLoadFile = false;
     std::wifstream fileIn(filePath.c_str()); //loading the file
@@ -76,7 +76,11 @@ bool OBJHandler::LoadFile(std::wstring filePath)
             }
 
         }
-        bool hello = true;
+        //SimpleVertex2 cube[] =
+        //{
+        //    
+        //};
+        //vertexBuffer.Initialize(device, sizeof(vecTriangles), vecTriangles.size(),vecTriangles);
+        
     }
-    return couldLoadFile;
 }

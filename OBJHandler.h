@@ -3,6 +3,7 @@
 #include"Mesh.h"
 #include<fstream>
 #include<sstream>
+#include"VertexBuffer.h"
 
 struct Position
 {
@@ -30,6 +31,7 @@ struct Vertex
 	TextureCoordinate tCoor;
 	Normal norm;
 };
+
 struct Triangle
 {
 	Triangle(Vertex vertices[3])
@@ -42,6 +44,21 @@ struct Triangle
 
 };
 
+//struct SimpleVertex2
+//{
+//	float pos[24];
+//	float clr[24];
+//
+//	SimpleVertex2(const std::array<float, 24>& position, const std::array<float, 24>& colour)
+//	{
+//		for (int i = 0; i < 24; ++i)
+//		{
+//			pos[i] = position[i];
+//			clr[i] = colour[i];
+//		}
+//	}
+//};
+
 class OBJHandler
 {
 private:
@@ -50,7 +67,7 @@ private:
 public:
 	OBJHandler();
 	void initialize();
-	bool LoadFile(std::wstring filePath);
+	void LoadFile(ID3D11Device* device,VertexBuffer& vertexBuffer, std::wstring filePath);
 
 };
 
