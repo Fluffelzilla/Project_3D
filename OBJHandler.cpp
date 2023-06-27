@@ -76,11 +76,11 @@ void OBJHandler::LoadFile(ID3D11Device* device, VertexBuffer& vertexBuffer,std::
             }
 
         }
-        //SimpleVertex2 cube[] =
-        //{
-        //    
-        //};
-        //vertexBuffer.Initialize(device, sizeof(vecTriangles), vecTriangles.size(),vecTriangles);
+        int byteSizeOfVertex = sizeof(Normal) + sizeof(TextureCoordinate) + sizeof(Position);
+        int byteSizeOfTriangle = byteSizeOfVertex * 3;
+        int byteSizeOfData = byteSizeOfTriangle * vecTriangles.size();
+
+        vertexBuffer.Initialize(device, byteSizeOfData, vecTriangles.size() * 0, &vecTriangles[0]);
         
     }
 }

@@ -6,7 +6,8 @@
 
 void LoadShaders(ID3D11Device* device, Shader* vShader, Shader* pShader)
 {
-	vShader->Initialize(device, ShaderType::VERTEX_SHADER, "VertexShader.cso");
+	vShader->Initialize(device, ShaderType::VERTEX_SHADER, "VertexShader2.cso");
+	//vShader->Initialize(device, ShaderType::VERTEX_SHADER, "VertexShader.cso");
 	pShader->Initialize(device, ShaderType::PIXEL_SHADER, "PixelShader.cso");
 }
 
@@ -17,14 +18,16 @@ void CreateInputLayout(ID3D11Device* device, InputLayout& inputLayout, Shader* v
 
 void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 {
-	SimpleVertex triangle[] =
-	{
-		{ {0, 0.5f, 0.0f}, {0, 0, 1} },
-		{ {0.5, -0.5f, 0.0f}, {0, 1, 0} },
-		{ {-0.5, -0.5f, 0.0f}, {1, 0, 0}}
-	};
+	//SimpleVertex triangle[] =
+	//{
+	//	{ {0, 0.5f, 0.0f}, {0, 0, 1} },
+	//	{ {0.5, -0.5f, 0.0f}, {0, 1, 0} },
+	//	{ {-0.5, -0.5f, 0.0f}, {1, 0, 0}}
+	//};
 	//TODO: ta bort hårdkodad antal verticer!
-	vertexBuffer.Initialize(device, sizeof(triangle), 3, triangle);
+	//vertexBuffer.Initialize(device, sizeof(triangle), 3, triangle);
+	OBJHandler objhandler;
+	objhandler.LoadFile(device, vertexBuffer, L"objects/bCube.obj");
 }
 
 bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, Shader* vShader,

@@ -7,17 +7,17 @@
 #include "Pipeline.h"
 
 #include "TimeHandler.h"
-
+#include"OBJHandler.h"
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
 #include "Camera.h"
 #include "shader.h"
-#include"OBJHandler.h"
+
 void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11InputLayout* inputLayout,
 	ID3D11Buffer* vertexBuffer, ID3D11Buffer* cameraBuffer,Shader& vShader,Shader& pShader)
 {
-	UINT stride = sizeof(SimpleVertex);
+	UINT stride = sizeof(Normal) + sizeof(TextureCoordinate) + sizeof(Position);
 	UINT offset = 0;
 	float clearColour[4] = { 0, 0, 0, 0 };
 	immediateContext->ClearRenderTargetView(rtv, clearColour);
@@ -31,7 +31,7 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	vShader.BindShader(immediateContext);
 	pShader.BindShader(immediateContext);
 
-	immediateContext->Draw(3, 0);
+	immediateContext->Draw(36, 0);
 }
 
 void MoveCamera(Camera& camera)
@@ -148,8 +148,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	MSG msg = { };
 
-	OBJHandler objhandler;
-	objhandler.LoadFile(device,vertexBuffer,L"objects/cube.obj");
+
 
 	while (msg.message != WM_QUIT)
 	{
