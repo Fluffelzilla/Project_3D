@@ -19,7 +19,7 @@ void CreateInputLayout(ID3D11Device* device, InputLayout& inputLayout, Shader* v
 void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 {
 	OBJHandler objhandler;
-	objhandler.LoadFile(L"objects/cube.obj");
+	objhandler.LoadFile(L"objects/otherCube.obj");
 
 	vertexBuffer.Initialize(device, objhandler.getByteSizeData(), objhandler.getNrOfVertices(), objhandler.getVecTrianglesData());
 }

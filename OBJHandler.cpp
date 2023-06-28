@@ -5,11 +5,6 @@ OBJHandler::OBJHandler()
 
 }
 
-void OBJHandler::initialize()
-{
-    
-}
-
 void OBJHandler::LoadFile(std::wstring filePath)
 {
     bool couldLoadFile = false;

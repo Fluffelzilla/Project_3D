@@ -51,7 +51,6 @@ private:
 	
 public:
 	OBJHandler();
-	void initialize();
 	void LoadFile(std::wstring filePath);
 	int getByteSizeData();
 	std::vector<float> getVecTriangles();

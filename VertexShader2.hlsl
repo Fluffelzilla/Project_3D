@@ -9,7 +9,7 @@ struct VertexShaderInput
 struct VertexShaderOutput
 {
 	float4 position : SV_POSITION;
-	float4 texcoor : TEXCOORD;
+	
 	
 };
 
@@ -26,7 +26,7 @@ VertexShaderOutput main(VertexShaderInput input)
 	output.position = float4(input.position, 1.0f);
 	output.position = mul(output.position, world);
 	output.position = mul(output.position, viewPro);
-	output.texcoor = float4(input.texcoor, 1.0f, 1.0f);
+	
 	
 	return output;
 }
