@@ -59,7 +59,7 @@ void OBJHandler::LoadFile(std::wstring filePath)
                 // also the obj file starts with vertex 1 and we are therefor changing it to vertex 0 as a list starts at 0.
                 else if (command == L"f")
                 {
-                    Vertex ver[3];
+                    //Vertex ver[3];
                     for (int i = 0; i < 3; i++)
                     {
                         ssLine >> x;
@@ -67,11 +67,19 @@ void OBJHandler::LoadFile(std::wstring filePath)
                         ssLine >> y;
                         ssLine >> trash; // trash contains "/" that is unsubable
                         ssLine >> z;
-                        ver[i].pos = vecPos[x - 1];
+                        vecTriangles.emplace_back(vecPos[x - 1].x);
+                        vecTriangles.emplace_back(vecPos[x - 1].y);
+                        vecTriangles.emplace_back(vecPos[x - 1].z);
+                        vecTriangles.emplace_back(vecTexcoor[y - 1].u);
+                        vecTriangles.emplace_back(vecTexcoor[y - 1].v);                  
+                        vecTriangles.emplace_back(vecNorm[z - 1].x);
+                        vecTriangles.emplace_back(vecNorm[z - 1].y);
+                        vecTriangles.emplace_back(vecNorm[z - 1].z);
+                        /*ver[i].pos = vecPos[x - 1];
                         ver[i].tCoor = vecTexcoor[y - 1];
-                        ver[i].norm = vecNorm[z - 1];
+                        ver[i].norm = vecNorm[z - 1];*/
                     }
-                    vecTriangles.emplace_back(ver);
+                    //vecTriangles.emplace_back(ver);
                 }
             }
 
@@ -88,12 +96,12 @@ int OBJHandler::getByteSizeData()
     return byteSizeOfData;
 }
 
-std::vector<Triangle> OBJHandler::getVecTriangles()
+std::vector<float> OBJHandler::getVecTriangles()
 {
     return vecTriangles;
 }
 
 void* OBJHandler::getVecTrianglesData()
 {
-    return &vecTriangles;
+    return &vecTriangles[0];
 }

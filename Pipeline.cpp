@@ -29,11 +29,11 @@ void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 
 	OBJHandler objhandler;
 	objhandler.LoadFile(L"objects/cube.obj");
-	Triangle triss[] =
-	{
-		objhandler.getVecTriangles()[0],
-		objhandler.getVecTriangles()[1]
-	};
+	//Triangle triss[] =
+	//{
+	//	objhandler.getVecTriangles()[0],
+	//	objhandler.getVecTriangles()[1]
+	//};
 	vertexBuffer.Initialize(device, objhandler.getByteSizeData(), objhandler.getVecTriangles().size() * 3, objhandler.getVecTrianglesData());
 }
 

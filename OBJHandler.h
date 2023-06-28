@@ -3,7 +3,6 @@
 #include"Mesh.h"
 #include<fstream>
 #include<sstream>
-#include"VertexBuffer.h"
 
 struct Position
 {
@@ -14,7 +13,7 @@ struct Position
 struct TextureCoordinate
 {
 	TextureCoordinate(double x, double y) :
-		u(u), v(v) {}
+		u(x), v(y) {}
 	double u, v;
 };
 struct Normal
@@ -48,14 +47,14 @@ class OBJHandler
 {
 private:
 	int byteSizeOfData;
-	std::vector<Triangle> vecTriangles; // stores the combined information to a triangle
+	std::vector<float> vecTriangles; // stores the combined information to a triangle
 	
 public:
 	OBJHandler();
 	void initialize();
 	void LoadFile(std::wstring filePath);
 	int getByteSizeData();
-	std::vector<Triangle> getVecTriangles();
+	std::vector<float> getVecTriangles();
 	void* getVecTrianglesData();
 };
 
