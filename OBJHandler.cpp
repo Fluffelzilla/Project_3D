@@ -10,7 +10,7 @@ void OBJHandler::initialize()
     
 }
 
-void OBJHandler::LoadFile(ID3D11Device* device, VertexBuffer& vertexBuffer,std::wstring filePath)
+void OBJHandler::LoadFile(std::wstring filePath)
 {
     bool couldLoadFile = false;
     std::wifstream fileIn(filePath.c_str()); //loading the file
@@ -21,7 +21,7 @@ void OBJHandler::LoadFile(ID3D11Device* device, VertexBuffer& vertexBuffer,std::
         std::vector<Position> vecPos; // a vector to store a vertex position
         std::vector<TextureCoordinate> vecTexcoor; // vector to store texturecoordinates in
         std::vector<Normal> vecNorm; // vector to stor nomals in
-        std::vector<Triangle> vecTriangles; // stores the combined information to a triangle
+         
         while (std::getline(fileIn,line)) // gets a line in the obj file
         {
             std::wstringstream ssLine(line); //puts line into buffer
@@ -78,9 +78,17 @@ void OBJHandler::LoadFile(ID3D11Device* device, VertexBuffer& vertexBuffer,std::
         }
         int byteSizeOfVertex = sizeof(Normal) + sizeof(TextureCoordinate) + sizeof(Position);
         int byteSizeOfTriangle = byteSizeOfVertex * 3;
-        int byteSizeOfData = byteSizeOfTriangle * vecTriangles.size();
+        byteSizeOfData = byteSizeOfTriangle * vecTriangles.size();
 
-        vertexBuffer.Initialize(device, byteSizeOfData, vecTriangles.size() * 0, &vecTriangles[0]);
-        
     }
+}
+
+int OBJHandler::getByteSizeData()
+{
+    return byteSizeOfData;
+}
+
+std::vector<Triangle> OBJHandler::getVecTriangles()
+{
+    return vecTriangles;
 }

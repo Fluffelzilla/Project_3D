@@ -44,30 +44,17 @@ struct Triangle
 
 };
 
-//struct SimpleVertex2
-//{
-//	float pos[24];
-//	float clr[24];
-//
-//	SimpleVertex2(const std::array<float, 24>& position, const std::array<float, 24>& colour)
-//	{
-//		for (int i = 0; i < 24; ++i)
-//		{
-//			pos[i] = position[i];
-//			clr[i] = colour[i];
-//		}
-//	}
-//};
-
 class OBJHandler
 {
 private:
-
+	int byteSizeOfData;
+	std::vector<Triangle> vecTriangles; // stores the combined information to a triangle
 	
 public:
 	OBJHandler();
 	void initialize();
-	void LoadFile(ID3D11Device* device,VertexBuffer& vertexBuffer, std::wstring filePath);
-
+	void LoadFile(std::wstring filePath);
+	int getByteSizeData();
+	std::vector<Triangle> getVecTriangles();
 };
 

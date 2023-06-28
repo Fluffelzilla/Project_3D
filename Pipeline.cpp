@@ -27,7 +27,8 @@ void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
 	//TODO: ta bort hårdkodad antal verticer!
 	//vertexBuffer.Initialize(device, sizeof(triangle), 3, triangle);
 	OBJHandler objhandler;
-	objhandler.LoadFile(device, vertexBuffer, L"objects/bCube.obj");
+	objhandler.LoadFile(L"objects/bCube.obj");
+	vertexBuffer.Initialize(device, objhandler.getByteSizeData(), objhandler.getVecTriangles().size() * 3, &objhandler.getVecTriangles()[0]);
 }
 
 bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, Shader* vShader,
