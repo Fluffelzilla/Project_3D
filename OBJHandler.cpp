@@ -59,7 +59,6 @@ void OBJHandler::LoadFile(std::wstring filePath)
                 // also the obj file starts with vertex 1 and we are therefor changing it to vertex 0 as a list starts at 0.
                 else if (command == L"f")
                 {
-                    //Vertex ver[3];
                     for (int i = 0; i < 3; i++)
                     {
                         ssLine >> x;
@@ -75,18 +74,13 @@ void OBJHandler::LoadFile(std::wstring filePath)
                         vecTriangles.emplace_back(vecNorm[z - 1].x);
                         vecTriangles.emplace_back(vecNorm[z - 1].y);
                         vecTriangles.emplace_back(vecNorm[z - 1].z);
-                        /*ver[i].pos = vecPos[x - 1];
-                        ver[i].tCoor = vecTexcoor[y - 1];
-                        ver[i].norm = vecNorm[z - 1];*/
                     }
-                    //vecTriangles.emplace_back(ver);
                 }
             }
 
         }
-        int byteSizeOfVertex = sizeof(Normal) + sizeof(TextureCoordinate) + sizeof(Position);
-        int byteSizeOfTriangle = byteSizeOfVertex * 3;
-        byteSizeOfData = byteSizeOfTriangle * vecTriangles.size();
+
+        byteSizeOfData = vecTriangles.size() * sizeof(float);
 
     }
 }
@@ -104,4 +98,13 @@ std::vector<float> OBJHandler::getVecTriangles()
 void* OBJHandler::getVecTrianglesData()
 {
     return &vecTriangles[0];
+}
+
+int OBJHandler::getNrOfVertices()
+{
+    //every vertex uses 8 floats:
+    //position x,y,z = 3 floats
+    //texturecoordinates u,v = 2 floats
+    //normal = x,y,z = 3 floats
+    return vecTriangles.size()/8;
 }

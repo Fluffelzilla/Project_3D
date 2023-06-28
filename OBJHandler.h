@@ -22,26 +22,26 @@ struct Normal
 		x(x), y(y), z(z) {}
 	double x, y, z;
 };
-struct Vertex
-{
-	Vertex(double x = 0, double y = 0, double z = 0, double u = 0, double v = 0, double nx = 0, double ny = 0, double nz = 0):
-		pos(x,y,z), tCoor(u,v), norm(nx,ny,nz) {}
-	Position pos;
-	TextureCoordinate tCoor;
-	Normal norm;
-};
+//struct Vertex
+//{
+//	Vertex(double x = 0, double y = 0, double z = 0, double u = 0, double v = 0, double nx = 0, double ny = 0, double nz = 0):
+//		pos(x,y,z), tCoor(u,v), norm(nx,ny,nz) {}
+//	Position pos;
+//	TextureCoordinate tCoor;
+//	Normal norm;
+//};
 
-struct Triangle
-{
-	Triangle(Vertex vertices[3])
-	{
-		vers[0] = vertices[0];
-		vers[1] = vertices[1];
-		vers[2] = vertices[2];
-	}
-	Vertex vers[3];
-
-};
+//struct Triangle
+//{
+//	Triangle(Vertex vertices[3])
+//	{
+//		vers[0] = vertices[0];
+//		vers[1] = vertices[1];
+//		vers[2] = vertices[2];
+//	}
+//	Vertex vers[3];
+//
+//};
 
 class OBJHandler
 {
@@ -56,5 +56,6 @@ public:
 	int getByteSizeData();
 	std::vector<float> getVecTriangles();
 	void* getVecTrianglesData();
+	int getNrOfVertices();
 };
 

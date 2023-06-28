@@ -28,11 +28,6 @@ void InputLayout::AddInputElement(const std::string& semanticName, DXGI_FORMAT f
 void InputLayout::FinalizeInputLayout(ID3D11Device* device, const void* vsDataPtr, size_t vsDataSize)
 {
 	const int nrOfElements = 3;
-	//for (unsigned int i = 0; i < elements.size(); i++)
-	//{
-	//	elements[i].SemanticName = semanticNames[i].c_str();
-	//}
-	//device->CreateInputLayout(elements.data(), elements.size(), vsDataPtr, vsDataSize, &inputLayout);
 
 	D3D11_INPUT_ELEMENT_DESC inputDesc[nrOfElements] =
 	{
