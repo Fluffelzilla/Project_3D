@@ -17,9 +17,9 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsView, D3D11_VIEWPORT& viewport, ID3D11InputLayout* inputLayout,
 	ID3D11Buffer* vertexBuffer, ID3D11Buffer* cameraBuffer,Shader& vShader,Shader& pShader)
 {
-	UINT stride = sizeof(Normal) + sizeof(TextureCoordinate) + sizeof(Position);
+	UINT stride = sizeof(Triangle);
 	UINT offset = 0;
-	float clearColour[4] = { 0, 0, 0, 0 };
+	float clearColour[4] = { 0, 0.2, 0, 0 };
 	immediateContext->ClearRenderTargetView(rtv, clearColour);
 	immediateContext->ClearDepthStencilView(dsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 	immediateContext->VSSetConstantBuffers(0, 1, &cameraBuffer);

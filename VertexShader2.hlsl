@@ -9,7 +9,8 @@ struct VertexShaderInput
 struct VertexShaderOutput
 {
 	float4 position : SV_POSITION;
-	float3 colour : COLOUR;
+	float2 texcoor : TEXCOORD;
+	float3 normal : NORMAL;
 };
 
 cbuffer camerabuffer
@@ -25,6 +26,7 @@ VertexShaderOutput main(VertexShaderInput input)
 	output.position = float4(input.position, 1.0f);
 	output.position = mul(output.position, world);
 	output.position = mul(output.position, viewPro);
-	output.colour = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	output.texcoor = input.texcoor;
+	output.normal = input.normal;
 	return output;
 }

@@ -92,3 +92,8 @@ std::vector<Triangle> OBJHandler::getVecTriangles()
 {
     return vecTriangles;
 }
+
+void* OBJHandler::getVecTrianglesData()
+{
+    return &vecTriangles;
+}

@@ -56,5 +56,6 @@ public:
 	void LoadFile(std::wstring filePath);
 	int getByteSizeData();
 	std::vector<Triangle> getVecTriangles();
+	void* getVecTrianglesData();
 };
 
