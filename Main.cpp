@@ -7,7 +7,7 @@
 #include "Pipeline.h"
 
 #include "TimeHandler.h"
-#include"OBJHandler.h"
+#include"ModelHandler.h"
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
 #include "Camera.h"
@@ -120,6 +120,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	VertexBuffer vertexBuffer;
 	Shader vertexShader;
 	Shader pixelShader;
+	ModelHandler mHandler;
 
 	if (!SetupD3D11(WIDTH, HEIGHT, window, device, immediateContext, swapChain, rtv, dsTexture, dsView, viewport))
 	{
@@ -127,7 +128,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
-	if (!SetupPipeline(device, vertexBuffer, &vertexShader, &pixelShader, inputLayout))
+	if (!SetupPipeline(device, vertexBuffer, &vertexShader, &pixelShader, inputLayout, mHandler))
 	{
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;

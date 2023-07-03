@@ -16,22 +16,21 @@ void CreateInputLayout(ID3D11Device* device, InputLayout& inputLayout, Shader* v
 	inputLayout.FinalizeInputLayout(device, vShader->GetShaderByteData(), vShader->GetShaderByteSize());
 }
 
-void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer)
+void CreateVertexBuffer(ID3D11Device* device, VertexBuffer& vertexBuffer, ModelHandler& mHandler)
 {
-	OBJHandler objhandler;
-	objhandler.LoadFile(L"objects/otherCube.obj");
-
-	vertexBuffer.Initialize(device, objhandler.getByteSizeData(), objhandler.getNrOfVertices(), objhandler.getVecTrianglesData());
+	//OBJHandler objhandler;
+	//objhandler.LoadFile(L"objects/otherCube.obj");
+	vertexBuffer.Initialize(device,mHandler.objhandler.getByteSizeData(), mHandler.objhandler.getNrOfVertices(), mHandler.objhandler.getVecTrianglesData());
 }
 
 bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, Shader* vShader,
-	Shader* pShader, InputLayout &inputLayout)
+	Shader* pShader, InputLayout &inputLayout, ModelHandler& mHandler)
 {
 	LoadShaders(device, vShader, pShader);
 
 	CreateInputLayout(device, inputLayout, vShader);
 
-	CreateVertexBuffer(device, vertexBuffer);
+	CreateVertexBuffer(device, vertexBuffer, mHandler);
 
 	return true;
 }

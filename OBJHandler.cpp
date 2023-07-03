@@ -85,10 +85,6 @@ int OBJHandler::getByteSizeData()
     return byteSizeOfData;
 }
 
-std::vector<float> OBJHandler::getVecTriangles()
-{
-    return vecTriangles;
-}
 
 void* OBJHandler::getVecTrianglesData()
 {
