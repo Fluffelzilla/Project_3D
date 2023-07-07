@@ -99,3 +99,4 @@ int OBJHandler::getNrOfVertices()
     //normal = x,y,z = 3 floats
     return vecTriangles.size()/8;
 }
+

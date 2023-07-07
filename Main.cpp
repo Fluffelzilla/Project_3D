@@ -7,7 +7,7 @@
 #include "Pipeline.h"
 
 #include "TimeHandler.h"
-#include"ModelHandler.h"
+//#include"ModelHandler.h"
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
 #include "Camera.h"
@@ -19,9 +19,9 @@ void Render(ID3D11DeviceContext* immediateContext, ID3D11RenderTargetView* rtv,
 {
 	UINT stride = sizeof(float)*8;
 	UINT offset = 0;
-	float clearColour[4] = { 0, 0.2, 0, 0 };
-	immediateContext->ClearRenderTargetView(rtv, clearColour);
-	immediateContext->ClearDepthStencilView(dsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+	float clearColour[4] = { 0, 0.2, 0, 0 }; //behöver göras en gång innan någon rendering händer, ej för varje objekt
+	immediateContext->ClearRenderTargetView(rtv, clearColour);//behöver göras en gång innan någon rendering händer, ej för varje objekt
+	immediateContext->ClearDepthStencilView(dsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);//behöver göras en gång innan någon rendering händer, ej för varje objekt
 	immediateContext->VSSetConstantBuffers(0, 1, &cameraBuffer);
 	immediateContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	immediateContext->IASetInputLayout(inputLayout);
@@ -120,7 +120,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	VertexBuffer vertexBuffer;
 	Shader vertexShader;
 	Shader pixelShader;
-	ModelHandler mHandler;
 
 	if (!SetupD3D11(WIDTH, HEIGHT, window, device, immediateContext, swapChain, rtv, dsTexture, dsView, viewport))
 	{
@@ -128,7 +127,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 
-	if (!SetupPipeline(device, vertexBuffer, &vertexShader, &pixelShader, inputLayout, mHandler))
+	if (!SetupPipeline(device, vertexBuffer, &vertexShader, &pixelShader, inputLayout))
 	{
 		std::cerr << "Failed to setup pipeline!" << std::endl;
 		return -1;
@@ -168,7 +167,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			MoveCamera(camera);
 			camera.UpdateInternalConstantBuffer(immediateContext);
 
-			Render(immediateContext, rtv, dsView, viewport, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer(),vertexShader,pixelShader);
+			//Render(immediateContext, rtv, dsView, viewport, inputLayout.GetInputLayout(), vertexBuffer.GetBuffer(), camera.GetConstantBuffer(),vertexShader,pixelShader);
 			swapChain->Present(0, 0);
 			elapsedTime = 0.0f;
 			frames = 0;

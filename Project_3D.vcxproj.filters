@@ -99,7 +99,7 @@
     <ClCompile Include="OBJHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModelHandler.cpp">
+    <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,7 +185,7 @@
     <ClInclude Include="OBJHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModelHandler.h">
+    <ClInclude Include="Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

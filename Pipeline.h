@@ -4,7 +4,6 @@
 #include "InputLayout.h"
 #include "VertexBuffer.h" 
 #include"Shader.h"
-//#include"OBJHandler.h"
-#include"ModelHandler.h"
+#include"OBJHandler.h"
 
-bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, Shader* vShader, Shader* pShader, InputLayout& inputLayout, ModelHandler& mHandler);
+bool SetupPipeline(ID3D11Device* device, VertexBuffer& vertexBuffer, Shader* vShader, Shader* pShader, InputLayout& inputLayout);

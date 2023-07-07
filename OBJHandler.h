@@ -3,6 +3,7 @@
 #include"Mesh.h"
 #include<fstream>
 #include<sstream>
+#include"Shader.h"
 
 struct Position
 {
@@ -35,5 +36,6 @@ public:
 	int getByteSizeData();
 	void* getVecTrianglesData();
 	int getNrOfVertices();
+	
 };
 
